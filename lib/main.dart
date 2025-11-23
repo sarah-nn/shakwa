@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       locale: const Locale('ar'),
-      theme: ThemeData.light(),
+      theme: ThemeData(  fontFamily: "Cairo",
+),
       supportedLocales: const [Locale('ar', '')],
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       routerConfig: Routing.router,
+      
     );
   }
 }

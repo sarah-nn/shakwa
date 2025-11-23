@@ -426,6 +426,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  zapx:
+    dependency: "direct main"
+    description:
+      name: zapx
+      sha256: "5d251501037ec5c2846d6c9d5ef60fa3a6afc3578c326051bebb52e7ee4d9016"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.13"
 sdks:
   dart: ">=3.7.2 <4.0.0"
   flutter: ">=3.29.0"

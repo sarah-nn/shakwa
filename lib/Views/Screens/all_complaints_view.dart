@@ -17,6 +17,7 @@ class AllComplaintsView extends StatelessWidget {
           color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 20,
+          fontFamily: "Cairo"
         ),
         backgroundColor: AppColor.primaryColor,
 
@@ -39,6 +40,8 @@ class AllComplaintsView extends StatelessWidget {
           child: FloatingActionButton(
             onPressed: () {
               print('FAB pressed: Add New Complaint');
+                          GoRouter.of(context).push(AppRouter.addComplaintView);
+
             },
             backgroundColor: AppColor.primaryColor,
             shape: const CircleBorder(), // لضمان شكل دائري مثالي
