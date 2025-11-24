@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shakwa/Models/notification_model.dart';
+import 'package:shakwa/Data/Models/notification_model.dart';
 
 final List<Map<String, String>> complaints = [
   {

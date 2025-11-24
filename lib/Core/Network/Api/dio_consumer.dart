@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:shakwa/Core/Constants/end_points.dart';
 import 'package:shakwa/Core/Network/Api/api_consumer.dart';
+import 'package:shakwa/Core/Network/Api/auth_interceptor.dart';
 import 'package:shakwa/Core/Network/Api/dio_logger_interceptors.dart';
-import 'package:shakwa/Core/Network/token_handle.dart';
-import 'package:shakwa/Core/service_locator.dart';
 
 class DioConsumer implements Api {
   late Dio _dio;
@@ -21,41 +20,59 @@ class DioConsumer implements Api {
       },
     );
 
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          final token =
-              getit<TokenHandler>().hasToken(TokenHandler.parentTokenKey)
-                  ? getit<TokenHandler>().getToken(TokenHandler.parentTokenKey)
-                  : getit<TokenHandler>().getToken(
-                    TokenHandler.studentTokenKey,
-                  );
-          if (token != null) {
-            options.headers['Authorization'] = 'Bearer $token';
-          }
-          return handler.next(options);
-        },
-        onError: (DioError error, handler) async {
-          // إذا كان الرد 401 يعني التوكن منتهي الصلاحية
-          if (error.response?.statusCode == 401) {
-            // مسح التوكن من الـ cache
-            getit<TokenHandler>().clearToken(TokenHandler.parentTokenKey);
-            getit<TokenHandler>().clearToken(TokenHandler.studentTokenKey);
+    // _dio.interceptors.add(
+    //   InterceptorsWrapper(
+    //     onRequest: (options, handler) async {
+    // final accessToken = await CacheHelper.getSecureData(
+    //   key: "accessToken",
+    // );
+    //       if (accessToken != null) {
+    //         options.headers["Authorization"] = "Bearer $accessToken";
+    //       }
 
-            // إعادة التوجيه لواجهة تسجيل الدخول
-            // HANDLE THIS IN SHAKWA APP
-            // if (navigatorKey.currentContext != null) {
-            //   GoRouter.of(
-            //     navigatorKey.currentContext!,
-            //   ).pushReplacement(AppRouter.advPage);
-            // }
-          }
+    //       return handler.next(options);
+    //     },
+    //     onError: (DioException err, handler) async {
+    //       if (err.response?.statusCode == 401) {
+    //         // Token Expired
+    // final refreshToken = await await CacheHelper.getSecureData(
+    //   key: "refreshToken",
+    // );
 
-          return handler.next(error);
-        },
-      ),
-    );
+    //         if (refreshToken != null) {
+    //           try {
+    // final refreshResponse = await dio.post(
+    //   EndPoints.refreshToken,
+    //   data: {"refreshToken": refreshToken},
+    // );
+    // final newAccessToken =
+    //     refreshResponse.data['data']["accessToken"];
 
+    //             // Save new token
+    // await CacheHelper.setSecureData(
+    //   key: "accessToken",
+    //   value: newAccessToken,
+    // );
+    // await CacheHelper.setSecureData(
+    //   key: "refreshToken",
+    //   value: refreshToken,
+    // );
+
+    //             // Retry original request
+    //             err.requestOptions.headers["Authorization"] =
+    //                 "Bearer $newAccessToken";
+    //             final cloneReq = await dio.fetch(err.requestOptions);
+    //             return handler.resolve(cloneReq);
+    //           } catch (e) {
+    //             // Refresh failed → force logout
+    //             return handler.next(err);
+    //           }
+    //         }
+    //       }
+    //     },
+    //   ),
+    // );
+    _dio.interceptors.add(AuthInterceptor(dio));
     _dio.interceptors.add(DioLoggerInterceptor());
   }
 

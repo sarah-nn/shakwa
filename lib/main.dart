@@ -13,13 +13,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       locale: const Locale('ar'),
-      theme: ThemeData(  fontFamily: "Cairo",
-),
+      theme: ThemeData(fontFamily: "Cairo"),
       supportedLocales: const [Locale('ar', '')],
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -28,7 +26,6 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       routerConfig: Routing.router,
-      
     );
   }
 }
