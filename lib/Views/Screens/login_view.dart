@@ -1,5 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakwa/Controllers/auth/auth_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
+import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
+import 'package:shakwa/Data/Repos/auth_repo.dart';
 import 'package:shakwa/Views/Widgets/login_form.dart';
 import 'package:shakwa/Views/Widgets/normal_appBar.dart';
 
@@ -25,7 +30,12 @@ class LoginView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 50),
-            LoginForm(),
+            BlocProvider(
+              create:
+                  (context) =>
+                      AuthCubit(authRepo: AuthRepo(DioConsumer(Dio()))),
+              child: LoginForm(),
+            ),
           ],
         ),
       ),

@@ -3,18 +3,18 @@ import 'package:shakwa/Core/Constants/app_color.dart';
 
 class CustomTextField extends StatefulWidget {
   final String? hint;
-  // final TextEditingController controller;
+  final TextEditingController controller;
   final IconData? icon;
   final bool? isPassword;
   final TextInputType keyboardType;
   final bool? obscureText;
   bool? passToggle;
- final String? baseText;
+  final String? baseText;
   final String? Function(String?)? validator;
 
   CustomTextField({
     super.key,
-    // required this.controller,
+    required this.controller,
     this.icon,
     this.isPassword = false,
     this.obscureText = false,
@@ -38,15 +38,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
         widget.baseText != null
             ? Column(
               children: [
-                Text(widget.baseText!, style: TextStyle(fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: Colors.black,)),
-                SizedBox(height: 10 ),
+                Text(
+                  widget.baseText!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 10),
               ],
             )
             : SizedBox(height: 0),
         TextFormField(
-          // controller: widget.controller,
+          controller: widget.controller,
           keyboardType: widget.keyboardType,
 
           obscureText:
@@ -54,10 +59,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           validator: widget.validator,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColor.primaryColor,
-                width: 0.77,
-              ),
+              borderSide: BorderSide(color: AppColor.primaryColor, width: 0.77),
               borderRadius: BorderRadius.circular(7.69),
             ),
             focusedBorder: OutlineInputBorder(
