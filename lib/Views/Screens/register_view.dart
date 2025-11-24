@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
-import 'package:shakwa/Views/Widgets/normal_appBar.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 import 'package:shakwa/Views/Widgets/register_form.dart';
 
 class RegisterView extends StatelessWidget {
@@ -10,7 +10,7 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: NormalAppBar(text: "إنشاء حساب"),
+      appBar: customAppBar("إنشاء حساب"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -23,9 +23,10 @@ class RegisterView extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AppColor.primaryColor,
                 fontSize: 20,
+                height: 1.7,
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 40),
             RegisterForm(),
           ],
         ),

@@ -30,7 +30,6 @@ class LoginForm extends StatelessWidget {
           CustomTextField(
             baseText: "كلمة المرور:",
             isPassword: true,
-            passToggle: true,
             hint: "ادخل كلمة المرور",
             // controller: cubit.passWordController,
             keyboardType: TextInputType.text,

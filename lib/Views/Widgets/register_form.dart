@@ -41,7 +41,6 @@ class RegisterForm extends StatelessWidget {
           CustomTextField(
             baseText: "كلمة المرور:",
             isPassword: true,
-            passToggle: true,
             hint: "ادخل كلمة المرور",
             // controller: cubit.passWordController,
             keyboardType: TextInputType.text,
@@ -53,7 +52,6 @@ class RegisterForm extends StatelessWidget {
           CustomTextField(
             baseText: "تأكيد كلمة المرور:",
             isPassword: true,
-            passToggle: true,
             hint: "أكد كلمة المرور",
             // controller: cubit.passWordController,
             keyboardType: TextInputType.text,
@@ -66,7 +64,7 @@ class RegisterForm extends StatelessWidget {
           CustomButton(
             text: "إنشاء حساب",
             onTap: () {
-              GoRouter.of(context).push(AppRouter.homePage);
+              GoRouter.of(context).push(AppRouter.verifyCodeView);
             },
           ),
           CustomTextButtomAuth(

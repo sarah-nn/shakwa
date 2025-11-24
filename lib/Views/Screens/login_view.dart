@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Views/Widgets/login_form.dart';
-import 'package:shakwa/Views/Widgets/normal_appBar.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -10,7 +10,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: NormalAppBar(text: "تسجيل الدخول "),
+      appBar: customAppBar("تسجيل الدخول"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
