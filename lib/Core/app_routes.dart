@@ -6,6 +6,7 @@ import 'package:shakwa/Views/Screens/login_view.dart';
 import 'package:shakwa/Views/Screens/notification_view.dart';
 import 'package:shakwa/Views/Screens/register_view.dart';
 import 'package:shakwa/Views/Screens/splash_view.dart';
+import 'package:shakwa/Views/Screens/verify_code_view.dart';
 import 'package:shakwa/main.dart';
 
 abstract class Routing {
@@ -35,6 +36,10 @@ abstract class Routing {
        GoRoute(
         path: AppRouter.homePage,
         builder: (context, state) => const AllComplaintsView(),
+      ),
+      GoRoute(
+        path: AppRouter.verifyCodeView,
+        builder: (context, state) => const VerifyCodeView(),
       ),
     ],
   );

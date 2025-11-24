@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
-import 'package:shakwa/Views/Widgets/normal_appBar.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 import 'package:shakwa/Views/Widgets/noti_list.dart';
 
 class NotificationView extends StatelessWidget {
@@ -9,7 +9,7 @@ class NotificationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: NormalAppBar(text: 'الإشعارات',),
+      appBar: customAppBar("الإشعارات"),
       body: NotiList(),
       backgroundColor: AppColor.secondColor,
     );
