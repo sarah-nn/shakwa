@@ -71,7 +71,6 @@ class RegisterForm extends StatelessWidget {
               CustomTextField(
                 baseText: "كلمة المرور:",
                 isPassword: true,
-                passToggle: true,
                 hint: "ادخل كلمة المرور",
                 controller: cubit.password,
                 keyboardType: TextInputType.text,

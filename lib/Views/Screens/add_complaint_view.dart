@@ -8,7 +8,7 @@ import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Data/Models/complaints_type_model.dart';
 import 'package:shakwa/Data/Models/government_model.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
-import 'package:shakwa/Views/Widgets/normal_appBar.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 
 class AddComplaintView extends StatefulWidget {
   const AddComplaintView({super.key});
@@ -146,6 +146,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                   ),
               const SizedBox(height: 16),
 
+
               // الموقع
               const Text('الموقع', style: TextStyle(fontSize: 14)),
               const SizedBox(height: 8),
@@ -168,7 +169,9 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                 ),
               ),
 
+
               const SizedBox(height: 16),
+
 
               // الوصف التفصيلي
               const Text('الوصف التفصيلي', style: TextStyle(fontSize: 14)),
@@ -184,6 +187,9 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                     borderSide: BorderSide(
                       color: AppColor.primaryColor.withOpacity(0.7),
                     ),
+                    borderSide: BorderSide(
+                      color: AppColor.primaryColor.withOpacity(0.7),
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -192,7 +198,9 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                 ),
               ),
 
+
               const SizedBox(height: 20),
+
 
               // المرفقات
               const Text('المرفقات (اختياري)', style: TextStyle(fontSize: 14)),
@@ -253,7 +261,9 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                 ),
               ),
 
+
               const SizedBox(height: 28),
+
 
               // زر الإرسال
               //
@@ -290,6 +300,12 @@ class _AddComplaintViewState extends State<AddComplaintView> {
     required List<String> items,
     required Function(String?) onChanged,
   }) {
+  Widget _buildDropdown({
+    String? value,
+    required String hint,
+    required List<String> items,
+    required Function(String?) onChanged,
+  }) {
     return Container(
       height: 52,
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -304,6 +320,15 @@ class _AddComplaintViewState extends State<AddComplaintView> {
           hint: Text(hint, textAlign: TextAlign.right),
           icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
           onChanged: onChanged,
+          items:
+              items
+                  .map(
+                    (e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e, textAlign: TextAlign.right),
+                    ),
+                  )
+                  .toList(),
           items:
               items
                   .map(

@@ -8,4 +8,8 @@ class EndPoints {
   static const String allGovernment = '$baseUrl/government';
   static const String Ctype = '$baseUrl/complaint-types/government/';
   static const String sendComplaint = '$baseUrl/complaints/send-complaint';
+  static const String complaint = '$baseUrl/complaints/user/my-complaints';
+  static const String complaintDetails =
+      '$baseUrl/complaints/user/my-complaints-sent-details/';
+  static const String sendReply = '$baseUrl/complaint-comments/citizen-reply';
 }

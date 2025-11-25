@@ -5,7 +5,7 @@ import 'package:shakwa/Controllers/auth/auth_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
-import 'package:shakwa/Views/Widgets/normal_appBar.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 import 'package:shakwa/Views/Widgets/register_form.dart';
 
 class RegisterView extends StatelessWidget {
@@ -29,6 +29,7 @@ class RegisterView extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AppColor.primaryColor,
                 fontSize: 20,
+                height: 1.7,
               ),
             ),
             SizedBox(height: 50),

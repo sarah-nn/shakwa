@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 
 class CustomButton extends StatelessWidget {
-    const CustomButton({super.key,required this.text,required this.onTap});
+  const CustomButton({super.key, required this.text, required this.onTap});
   final String text;
-  final  void Function()? onTap;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         onPressed: onTap,
-        child:  Text(
+        child: Text(
           text,
           style: TextStyle(
             fontSize: 16,
