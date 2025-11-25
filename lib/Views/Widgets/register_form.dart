@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/auth/auth_cubit.dart';
-import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
+import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Core/function.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
 import 'package:shakwa/Views/Widgets/custom_text_button.dart';
@@ -99,6 +99,13 @@ class RegisterForm extends StatelessWidget {
                     text: "إنشاء حساب",
                     onTap: () {
                       // cubit.signUp();
+                      // print(cubit.email.text);
+                      // email = cubit.email.text;
+                      // print(email);
+                      CacheHelper.setSecureData(
+                        key: "email",
+                        value: cubit.email.text,
+                      );
                       GoRouter.of(context).push(AppRouter.verifyCodeView);
                     },
                   ),

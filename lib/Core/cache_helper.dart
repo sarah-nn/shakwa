@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {
   late SharedPreferences sharedPreferences;
+
   static const _storage = FlutterSecureStorage();
 
   //! Here The Initialize of cache .

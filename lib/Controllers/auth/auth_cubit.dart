@@ -49,12 +49,9 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  verify() async {
+  verify(String email, String code) async {
     emit(AuthLoading());
-    final result = await authRepo.verify({
-      'email': email.text,
-      'otp': password.text,
-    });
+    final result = await authRepo.verify({'email': email, 'otp': code});
     result.fold(
       (failure) {
         emit(AuthFail(errMssg: failure.errorMessage));

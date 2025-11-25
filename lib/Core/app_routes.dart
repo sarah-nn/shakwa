@@ -7,6 +7,7 @@ import 'package:shakwa/Controllers/complaint_type/complaint_type_cubit.dart';
 import 'package:shakwa/Controllers/govenment/govenment_cubit.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
+import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Data/Repos/add_complaints_repo.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
 import 'package:shakwa/Data/Repos/send_complaint_repo.dart';
@@ -69,13 +70,13 @@ abstract class Routing {
       ),
       GoRoute(
         path: AppRouter.verifyCodeView,
-        builder:
-            (context, state) => BlocProvider(
-              create:
-                  (context) =>
-                      AuthCubit(authRepo: AuthRepo(DioConsumer(Dio()))),
-              child: const VerifyCodeView(),
-            ),
+        builder: (context, state) {
+          return BlocProvider(
+            create:
+                (context) => AuthCubit(authRepo: AuthRepo(DioConsumer(Dio()))),
+            child: VerifyCodeView(email: "sth"),
+          );
+        },
       ),
     ],
   );
