@@ -202,18 +202,18 @@ class AllComplaintsView extends StatelessWidget {
 //         ],
 //       ),
 
-//       const SizedBox(height: 12),
+      // const SizedBox(height: 12),
 
-//       // // المرفقات - الصور
-//       // if (widget.complaint..isNotEmpty) ...[
-//       //   const Text(
-//       //     'المرفقات (الصور):',
-//       //     style: TextStyle(fontWeight: FontWeight.bold),
-//       //   ),
-//       //   const SizedBox(height: 8),
-//       //   _buildImagesGrid(widget.complaint.images),
-//       //   const SizedBox(height: 10),
-//       // ],
+      // // المرفقات - الصور
+      // if (widget.complaint..isNotEmpty) ...[
+      //   const Text(
+      //     'المرفقات (الصور):',
+      //     style: TextStyle(fontWeight: FontWeight.bold),
+      //   ),
+      //   const SizedBox(height: 8),
+      //   _buildImagesGrid(widget.complaint.images),
+      //   const SizedBox(height: 10),
+      // ],
 
 //       // // المرفقات - ملفات
 //       // if (widget.complaint.files.isNotEmpty) ...[
@@ -262,49 +262,49 @@ class AllComplaintsView extends StatelessWidget {
 //   );
 // }
 
-// // Widget _buildImagesGrid(List<String> images) {
-// //   // grid من مربعات صغيرة بجانب بعضها
-// //   return SizedBox(
-// //     height: 100,
-// //     child: GridView.builder(
-// //       scrollDirection: Axis.horizontal,
-// //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-// //         crossAxisCount: 1, // افقي: صف واحد من العناصر
-// //         mainAxisSpacing: 8,
-// //         childAspectRatio: 1,
-// //       ),
-// //       itemCount: images.length,
-// //       itemBuilder: (context, i) {
-// //         final img = images[i];
-// //         return GestureDetector(
-// //           onTap: () => _openImageViewer(i, images),
-// //           child: ClipRRect(
-// //             borderRadius: BorderRadius.circular(10),
-// //             child: Center(
-// //               // محاكاة تحميل صورة من assets
-// //               child: Image.asset(
-// //                 img,
-// //                 fit: BoxFit.cover,
-// //                 errorBuilder: (context, error, stackTrace) {
-// //                   // لو الصورة مفقودة، نظهر placeholder مع اسم الملف
-// //                   return Container(
-// //                     color: Colors.grey.shade200,
-// //                     alignment: Alignment.center,
-// //                     child: Text(
-// //                       img.split('/').last,
-// //                       textAlign: TextAlign.center,
-// //                       style: TextStyle(color: Colors.grey.shade700),
-// //                     ),
-// //                   );
-// //                 },
-// //               ),
-// //             ),
-// //           ),
-// //         );
-// //       },
-// //     ),
-// //   );
-// // }
+// Widget _buildImagesGrid(List<String> images) {
+//   // grid من مربعات صغيرة بجانب بعضها
+//   return SizedBox(
+//     height: 100,
+//     child: GridView.builder(
+//       scrollDirection: Axis.horizontal,
+//       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//         crossAxisCount: 1, // افقي: صف واحد من العناصر
+//         mainAxisSpacing: 8,
+//         childAspectRatio: 1,
+//       ),
+//       itemCount: images.length,
+//       itemBuilder: (context, i) {
+//         final img = images[i];
+//         return GestureDetector(
+//           onTap: () => _openImageViewer(i, images),
+//           child: ClipRRect(
+//             borderRadius: BorderRadius.circular(10),
+//             child: Center(
+//               // محاكاة تحميل صورة من assets
+//               child: Image.asset(
+//                 img,
+//                 fit: BoxFit.cover,
+//                 errorBuilder: (context, error, stackTrace) {
+//                   // لو الصورة مفقودة، نظهر placeholder مع اسم الملف
+//                   return Container(
+//                     color: Colors.grey.shade200,
+//                     alignment: Alignment.center,
+//                     child: Text(
+//                       img.split('/').last,
+//                       textAlign: TextAlign.center,
+//                       style: TextStyle(color: Colors.grey.shade700),
+//                     ),
+//                   );
+//                 },
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     ),
+//   );
+// }
 
 // // Widget _buildFilesRow(List<String> files) {
 // //   return SizedBox(
@@ -384,96 +384,96 @@ class AllComplaintsView extends StatelessWidget {
 // // ---------------- Dialogs & Utilities ----------------
 
 // // فتح عارض صور مع أزرار تنقل
-// // void _openImageViewer(int startIndex, List<String> images) {
-// //   final controller = PageController(initialPage: startIndex);
-// //   int current = startIndex;
+// void _openImageViewer(int startIndex, List<String> images) {
+//   final controller = PageController(initialPage: startIndex);
+//   int current = startIndex;
 
-// //   showDialog(
-// //     context: context,
-// //     builder: (context) {
-// //       return StatefulBuilder(
-// //         builder: (context, setState) {
-// //           return Dialog(
-// //             shape: RoundedRectangleBorder(
-// //               borderRadius: BorderRadius.circular(14),
-// //             ),
-// //             insetPadding: const EdgeInsets.symmetric(
-// //               horizontal: 12,
-// //               vertical: 24,
-// //             ),
-// //             child: SizedBox(
-// //               height: MediaQuery.of(context).size.height * 0.70,
-// //               child: Column(
-// //                 children: [
-// //                   // العنوان مع زر الإغلاق
-// //                   Padding(
-// //                     padding: const EdgeInsets.all(10),
-// //                     child: Row(
-// //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// //                       children: const [
-// //                         CloseButton(),
-// //                         Text(
-// //                           "المرفقات",
-// //                           style: TextStyle(
-// //                             fontSize: 18,
-// //                             fontWeight: FontWeight.bold,
-// //                           ),
-// //                         ),
-// //                         SizedBox(width: 40),
-// //                       ],
-// //                     ),
-// //                   ),
+//   showDialog(
+//     context: context,
+//     builder: (context) {
+//       return StatefulBuilder(
+//         builder: (context, setState) {
+//           return Dialog(
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(14),
+//             ),
+//             insetPadding: const EdgeInsets.symmetric(
+//               horizontal: 12,
+//               vertical: 24,
+//             ),
+//             child: SizedBox(
+//               height: MediaQuery.of(context).size.height * 0.70,
+//               child: Column(
+//                 children: [
+//                   // العنوان مع زر الإغلاق
+//                   Padding(
+//                     padding: const EdgeInsets.all(10),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: const [
+//                         CloseButton(),
+//                         Text(
+//                           "المرفقات",
+//                           style: TextStyle(
+//                             fontSize: 18,
+//                             fontWeight: FontWeight.bold,
+//                           ),
+//                         ),
+//                         SizedBox(width: 40),
+//                       ],
+//                     ),
+//                   ),
 
-// //                   // الصور
-// //                   Expanded(
-// //                     child: PageView.builder(
-// //                       controller: controller,
-// //                       itemCount: images.length,
-// //                       onPageChanged: (i) => setState(() => current = i),
-// //                       itemBuilder: (context, index) {
-// //                         return InteractiveViewer(
-// //                           child: Image.asset(
-// //                             images[index],
-// //                             fit: BoxFit.contain,
-// //                           ),
-// //                         );
-// //                       },
-// //                     ),
-// //                   ),
+//                   // الصور
+//                   Expanded(
+//                     child: PageView.builder(
+//                       controller: controller,
+//                       itemCount: images.length,
+//                       onPageChanged: (i) => setState(() => current = i),
+//                       itemBuilder: (context, index) {
+//                         return InteractiveViewer(
+//                           child: Image.asset(
+//                             images[index],
+//                             fit: BoxFit.contain,
+//                           ),
+//                         );
+//                       },
+//                     ),
+//                   ),
 
-// //                   const SizedBox(height: 12),
+//                   const SizedBox(height: 12),
 
-// //                   // النقاط
-// //                   Row(
-// //                     mainAxisAlignment: MainAxisAlignment.center,
-// //                     children: List.generate(
-// //                       images.length,
-// //                       (i) => AnimatedContainer(
-// //                         duration: const Duration(milliseconds: 250),
-// //                         margin: const EdgeInsets.symmetric(horizontal: 4),
-// //                         width: current == i ? 12 : 8,
-// //                         height: current == i ? 12 : 8,
-// //                         decoration: BoxDecoration(
-// //                           color:
-// //                               current == i
-// //                                   ? AppColor.primaryColor
-// //                                   : Colors.grey.shade400,
-// //                           shape: BoxShape.circle,
-// //                         ),
-// //                       ),
-// //                     ),
-// //                   ),
+//                   // النقاط
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: List.generate(
+//                       images.length,
+//                       (i) => AnimatedContainer(
+//                         duration: const Duration(milliseconds: 250),
+//                         margin: const EdgeInsets.symmetric(horizontal: 4),
+//                         width: current == i ? 12 : 8,
+//                         height: current == i ? 12 : 8,
+//                         decoration: BoxDecoration(
+//                           color:
+//                               current == i
+//                                   ? AppColor.primaryColor
+//                                   : Colors.grey.shade400,
+//                           shape: BoxShape.circle,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
 
-// //                   const SizedBox(height: 12),
-// //                 ],
-// //               ),
-// //             ),
-// //           );
-// //         },
-// //       );
-// //     },
-// //   );
-// // }
+//                   const SizedBox(height: 12),
+//                 ],
+//               ),
+//             ),
+//           );
+//         },
+//       );
+//     },
+//   );
+// }
 
 // // فتح dialog للملفات
 // // void _openFileDialog(String filename) {

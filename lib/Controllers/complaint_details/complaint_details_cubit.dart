@@ -24,7 +24,7 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
 
     Future<void> sendReply({required int complaintId, required String text}) async {
     try {
-      emit(ComplaintDetailsLoading());
+      // emit(ComplaintDetailsLoading());
 
       // استدعاء API لإرسال الرد
       await showComplaintRepo.sendReply(
