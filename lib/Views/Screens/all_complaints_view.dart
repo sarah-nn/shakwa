@@ -1,8 +1,13 @@
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shakwa/Controllers/compainte/complaint_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
+import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
+import 'package:shakwa/Data/Repos/show_complain_repo.dart';
+import 'package:shakwa/Views/Widgets/complaints_list.dart';
 
 class AllComplaintsView extends StatelessWidget {
   const AllComplaintsView({super.key});
@@ -32,7 +37,13 @@ class AllComplaintsView extends StatelessWidget {
           ),
         ),
       ),
-      body: const AllComplaintsPage(),
+      body: BlocProvider(
+        create:
+            (context) => ComplaintCubit(
+              showComplaintRepo: ShowComplaintRepo(DioConsumer(Dio())),
+            ),
+        child: ComplaintsList(),
+      ),
       floatingActionButton: Align(
         alignment: Alignment.bottomRight,
         child: Padding(
@@ -51,765 +62,717 @@ class AllComplaintsView extends StatelessWidget {
   }
 }
 
-class AllComplaintsPage extends StatefulWidget {
-  const AllComplaintsPage({super.key});
-
-  @override
-  State<AllComplaintsPage> createState() => _AllComplaintsPageState();
-}
-
-class _AllComplaintsPageState extends State<AllComplaintsPage> {
-  // بيانات اختبارية جاهزة داخل الملف (self-contained)
-  final List<ComplaintModel> complaints = [
-    ComplaintModel(
-      entity: 'وزارة الصحة',
-      title: 'ازدحام شديد في مركز الرعاية',
-      description:
-          'يوجد ازدحام شديد في مركز الرعاية الأولية بسبب نقص الكوادر. يحتاج لتنظيم الفترات.',
-      location: 'حي النخيل - شارع 12',
-      reference: 'SHQ-2025-0001',
-      status: 'قيد العمل',
-      images: ['assets/img1.jpg', 'assets/img2.jpg', 'assets/img3.jpg'],
-      files: ['تقرير_مبدئي.pdf', 'تقرير_مبدئي.pdf'],
-      notes: 'تمت زيارة ميدانية مبدئية من قبل فريق المتابعة.',
-      extraRequest:
-          'الرجاء تزويدنا بعدد الأطباء في المركز وجدول دوامهم خلال الأسبوع الماضي.',
-      extraReplies: ['تم استلام الطلب، الرجاء انتظار الرد.'],
-      extraAttachments: [],
-    ),
-    ComplaintModel(
-      entity: 'هيئة الاتصالات',
-      title: 'ضعف تغطية الإنترنت',
-      description: 'انقطاع متكرر في خدمة الانترنت في الحي على مدار اليوم.',
-      location: 'منطقة الزهراء',
-      reference: 'SHQ-2025-0002',
-      status: 'تم الرفع',
-      images: [],
-      files: [],
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-      itemCount: complaints.length,
-      itemBuilder: (context, index) {
-        return ComplaintCard(
-          complaint: complaints[index],
-          onUpdated: () {
-            setState(() {}); // لإظهار أي تغييرات محلية (إضافة ردود/مرفقات)
-          },
-        );
-      },
-    );
-  }
-}
-
-// ----------------------- Model -----------------------
-class ComplaintModel {
-  String entity;
-  String title;
-  String description;
-  String location;
-  String reference;
-  String status;
-
-  // ملاحظات (عرض فقط)
-  String? notes;
-
-  // طلب معلومات إضافية (قابل للرد وإضافة مرفقات)
-  String? extraRequest;
-  List<String> extraReplies;
-  List<String> extraAttachments;
-
-  // المرفقات الأساسية
-  List<String> images; // مسارات صور assets أو urls
-  List<String> files; // أسماء ملفات pdf/doc
-
-  ComplaintModel({
-    required this.entity,
-    required this.title,
-    required this.description,
-    required this.location,
-    required this.reference,
-    required this.status,
-    this.notes,
-    this.extraRequest,
-    List<String>? extraReplies,
-    List<String>? extraAttachments,
-    List<String>? images,
-    List<String>? files,
-  }) : extraReplies = extraReplies ?? [],
-       extraAttachments = extraAttachments ?? [],
-       images = images ?? [],
-       files = files ?? [];
-}
-
 // ----------------------- ComplaintCard Widget -----------------------
-class ComplaintCard extends StatefulWidget {
-  final ComplaintModel complaint;
-  final VoidCallback? onUpdated;
+// class ComplaintCard extends StatefulWidget {
+//   final ComplaintModel complaint;
+//   final VoidCallback? onUpdated;
 
-  const ComplaintCard({super.key, required this.complaint, this.onUpdated});
+//   const ComplaintCard({super.key, required this.complaint, this.onUpdated});
 
-  @override
-  State<ComplaintCard> createState() => _ComplaintCardState();
-}
+//   @override
+//   State<ComplaintCard> createState() => _ComplaintCardState();
+// }
 
-class _ComplaintCardState extends State<ComplaintCard> {
-  bool _expanded = false;
+// class _ComplaintCardState extends State<ComplaintCard> {
+//   bool expanded = false;
 
-  @override
-  Widget build(BuildContext context) {
-    // البطاقة الرئيسية: رأس (جهة + عنوان) ثم محتوى قابل للتوسيع، ثم Divider وثابت الأسفل
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              // Header: اسم الجهة + نوع الشكوى (العنوان)
-              _buildHeader(),
+//   @override
+//   Widget build(BuildContext context) {
+//     final detailsCubit = context.read<ComplaintDetailsCubit>();
 
-              const SizedBox(height: 8),
+//     return Padding(
+//       padding: const EdgeInsets.only(bottom: 12),
+//       child: Card(
+//         elevation: 3,
+//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+//         child: Padding(
+//           padding: const EdgeInsets.all(15.0),
+//           child: Column(
+//             children: [
+//               GestureDetector(
+//                 onTap: () {
+//                   setState(() => expanded = !expanded);
 
-              // Expandable details (تظهر بعد الضغط)
-              if (_expanded) _buildDetailsSection(),
+//                   if (expanded) {
+//                     detailsCubit.getComplaintDetails(
+//                       complaint: widget.complaint.id,
+//                     );
+//                   }
+//                 },
+//                 child: _buildHeader(
+//                   widget.complaint,
+//                   Icon(
+//                     expanded
+//                         ? Icons.keyboard_arrow_up
+//                         : Icons.keyboard_arrow_down,
+//                     color: Colors.grey.shade700,
+//                     size: 28,
+//                   ),
+//                 ),
+//               ),
 
-              // دائمًا يظهر الفاصل والصف السفلي
-              const SizedBox(height: 12),
-              const Divider(height: 0.8, thickness: 0.7),
-              const SizedBox(height: 8),
+//               if (expanded)
+//                 BlocBuilder<ComplaintDetailsCubit, ComplaintDetailsState>(
+//                   builder: (context, state) {
+//                     if (state is ComplaintDetailsLoading) {
+//                       return const Padding(
+//                         padding: EdgeInsets.all(12),
+//                         child: CircularProgressIndicator(),
+//                       );
+//                     }
 
-              // bottom row: الرقم المرجعي و حالة الشكوى ثابتان
-              _buildBottomRow(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+//                     if (state is ComplaintDetailsSuccess) {
+//                       return _buildDetailsSection(
+//                         context,
+//                         state.complaintDetailsModel,
+//                       );
+//                     }
 
-  Widget _buildHeader() {
-    return InkWell(
-      onTap: () => setState(() => _expanded = !_expanded),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.complaint.entity,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  widget.complaint.title,
-                  style: const TextStyle(fontSize: 14),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          // سهم التوسيع
-          Icon(
-            _expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-            color: Colors.grey.shade700,
-            size: 28,
-          ),
-        ],
-      ),
-    );
-  }
+//                     if (state is ComplaintDetailsFailure) {
+//                       return const Padding(
+//                         padding: EdgeInsets.all(12),
+//                         child: Text("خطأ في تحميل التفاصيل"),
+//                       );
+//                     }
 
-  Widget _buildDetailsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // الوصف
-        const SizedBox(height: 8),
-        const Text('الوصف:', style: TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 6),
-        Text(widget.complaint.description),
+//                     return const SizedBox();
+//                   },
+//                 ),
 
-        const SizedBox(height: 12),
+//               const SizedBox(height: 12),
+//               const Divider(height: 0.8, thickness: 0.7),
+//               const SizedBox(height: 8),
 
-        // الموقع
-        const Text(
-          'موقع الشكوى:',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 6),
-        Row(
-          children: [
-            const Icon(Icons.location_on, size: 18, color: Colors.redAccent),
-            const SizedBox(width: 6),
-            Expanded(child: Text(widget.complaint.location)),
-          ],
-        ),
+//               _buildBottomRow(widget.complaint),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-        const SizedBox(height: 12),
+// Widget _buildHeader(ComplaintModel complaint, Icon icon) {
+//   return Row(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       Expanded(
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               complaint.complaintType.name,
+//               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+//             ),
+//             const SizedBox(height: 6),
+//             Text(complaint.description, style: const TextStyle(fontSize: 14)),
+//           ],
+//         ),
+//       ),
+//       const SizedBox(width: 8),
+//       // سهم التوسيع
+//       icon,
+//     ],
+//   );
+// }
 
-        // المرفقات - الصور
-        if (widget.complaint.images.isNotEmpty) ...[
-          const Text(
-            'المرفقات (الصور):',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          _buildImagesGrid(widget.complaint.images),
-          const SizedBox(height: 10),
-        ],
+// Widget _buildDetailsSection(
+//   BuildContext context,
+//   ComplaintDetailsModel compDet,
+// ) {
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       // الوصف
+//       const SizedBox(height: 8),
+//       const Text('الوصف:', style: TextStyle(fontWeight: FontWeight.bold)),
+//       const SizedBox(height: 6),
+//       Text(compDet.description),
 
-        // المرفقات - ملفات
-        if (widget.complaint.files.isNotEmpty) ...[
-          const Text(
-            'المرفقات (ملفات):',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          _buildFilesRow(widget.complaint.files),
-          const SizedBox(height: 10),
-        ],
+//       const SizedBox(height: 12),
 
-        // ملاحظات الجهة (زر لعرض dialog)
-        if (widget.complaint.notes != null) ...[
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-              onPressed: () => _showNotesDialog(widget.complaint.notes!),
-              icon: const Icon(
-                Icons.sticky_note_2,
-                color: AppColor.primaryColor,
-              ),
-              label: const Text(
-                'عرض ملاحظات الجهة',
-                style: TextStyle(color: AppColor.primaryColor),
-              ),
-            ),
-          ),
-        ],
+//       // الموقع
+//       const Text('موقع الشكوى:', style: TextStyle(fontWeight: FontWeight.bold)),
+//       const SizedBox(height: 6),
+//       Row(
+//         children: [
+//           const Icon(Icons.location_on, size: 18, color: Colors.redAccent),
+//           const SizedBox(width: 6),
+//           Expanded(child: Text(compDet.location)),
+//         ],
+//       ),
 
-        // طلب معلومات إضافية
-        if (widget.complaint.extraRequest != null) ...[
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-              onPressed: () => _showExtraRequestDialog(context),
-              icon: const Icon(
-                Icons.info_outline,
-                color: AppColor.primaryColor,
-              ),
-              label: const Text(
-                'طلب معلومات إضافية',
-                style: TextStyle(color: AppColor.primaryColor),
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
+//       const SizedBox(height: 12),
 
-  Widget _buildImagesGrid(List<String> images) {
-    // grid من مربعات صغيرة بجانب بعضها
-    return SizedBox(
-      height: 100,
-      child: GridView.builder(
-        scrollDirection: Axis.horizontal,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1, // افقي: صف واحد من العناصر
-          mainAxisSpacing: 8,
-          childAspectRatio: 1,
-        ),
-        itemCount: images.length,
-        itemBuilder: (context, i) {
-          final img = images[i];
-          return GestureDetector(
-            onTap: () => _openImageViewer(i, images),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Center(
-                // محاكاة تحميل صورة من assets
-                child: Image.asset(
-                  img,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    // لو الصورة مفقودة، نظهر placeholder مع اسم الملف
-                    return Container(
-                      color: Colors.grey.shade200,
-                      alignment: Alignment.center,
-                      child: Text(
-                        img.split('/').last,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey.shade700),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+//       // // المرفقات - الصور
+//       // if (widget.complaint..isNotEmpty) ...[
+//       //   const Text(
+//       //     'المرفقات (الصور):',
+//       //     style: TextStyle(fontWeight: FontWeight.bold),
+//       //   ),
+//       //   const SizedBox(height: 8),
+//       //   _buildImagesGrid(widget.complaint.images),
+//       //   const SizedBox(height: 10),
+//       // ],
 
-  Widget _buildFilesRow(List<String> files) {
-    return SizedBox(
-      height: 52,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: files.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (context, i) {
-          final f = files[i];
-          return GestureDetector(
-            onTap: () => _openFileDialog(f),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColor.primaryColor, width: 0.3),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.picture_as_pdf, color: Colors.red),
-                  const SizedBox(width: 8),
-                  Text(f),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+//       // // المرفقات - ملفات
+//       // if (widget.complaint.files.isNotEmpty) ...[
+//       //   const Text(
+//       //     'المرفقات (ملفات):',
+//       //     style: TextStyle(fontWeight: FontWeight.bold),
+//       //   ),
+//       //   const SizedBox(height: 8),
+//       //   _buildFilesRow(widget.complaint.files),
+//       //   const SizedBox(height: 10),
+//       // ],
 
-  Widget _buildBottomRow() {
-    return Row(
-      children: [
-        // الرقم المرجعي على اليمين (بسبب RTL)
-        Expanded(
-          child: Text(
-            'الرقم المرجعي: ${widget.complaint.reference}',
-            style: TextStyle(color: Colors.grey.shade700),
-          ),
-        ),
+//       // // ملاحظات الجهة (زر لعرض dialog)
+      // if (compDet.employeeNotes.isNotEmpty) ...[
+      //   Align(
+      //     alignment: Alignment.centerRight,
+      //     child: TextButton.icon(
+      //       onPressed: () => _showNotesDialog(context, compDet.employeeNotes),
+      //       icon: const Icon(Icons.sticky_note_2, color: AppColor.primaryColor),
+      //       label: const Text(
+      //         'عرض ملاحظات الجهة',
+      //         style: TextStyle(color: AppColor.primaryColor),
+      //       ),
+      //     ),
+      //   ),
+      // ],
 
-        // حالة الشكوى كـ capsule
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: _statusColor(widget.complaint.status).withOpacity(0.12),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            widget.complaint.status,
-            style: TextStyle(
-              color: _statusColor(widget.complaint.status),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+//       // طلب معلومات إضافية
+      // if (widget.complaint.extraRequest != null) ...[
+      //   Align(
+      //     alignment: Alignment.centerRight,
+      //     child: TextButton.icon(
+      //       onPressed: () => _showExtraRequestDialog(context),
+      //       icon: const Icon(
+      //         Icons.info_outline,
+      //         color: AppColor.primaryColor,
+      //       ),
+      //       label: const Text(
+      //         'طلب معلومات إضافية',
+      //         style: TextStyle(color: AppColor.primaryColor),
+      //       ),
+      //     ),
+      //   ),
+      // ],
+//     ],
+//   );
+// }
 
-  Color _statusColor(String status) {
-    switch (status) {
-      case 'تم الإنجاز':
-        return Colors.green;
-      case 'قيد العمل':
-        return Colors.orange;
-      case 'تم الرفع':
-        return Colors.red;
-      default:
-        return Colors.blueGrey;
-    }
-  }
+// // Widget _buildImagesGrid(List<String> images) {
+// //   // grid من مربعات صغيرة بجانب بعضها
+// //   return SizedBox(
+// //     height: 100,
+// //     child: GridView.builder(
+// //       scrollDirection: Axis.horizontal,
+// //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+// //         crossAxisCount: 1, // افقي: صف واحد من العناصر
+// //         mainAxisSpacing: 8,
+// //         childAspectRatio: 1,
+// //       ),
+// //       itemCount: images.length,
+// //       itemBuilder: (context, i) {
+// //         final img = images[i];
+// //         return GestureDetector(
+// //           onTap: () => _openImageViewer(i, images),
+// //           child: ClipRRect(
+// //             borderRadius: BorderRadius.circular(10),
+// //             child: Center(
+// //               // محاكاة تحميل صورة من assets
+// //               child: Image.asset(
+// //                 img,
+// //                 fit: BoxFit.cover,
+// //                 errorBuilder: (context, error, stackTrace) {
+// //                   // لو الصورة مفقودة، نظهر placeholder مع اسم الملف
+// //                   return Container(
+// //                     color: Colors.grey.shade200,
+// //                     alignment: Alignment.center,
+// //                     child: Text(
+// //                       img.split('/').last,
+// //                       textAlign: TextAlign.center,
+// //                       style: TextStyle(color: Colors.grey.shade700),
+// //                     ),
+// //                   );
+// //                 },
+// //               ),
+// //             ),
+// //           ),
+// //         );
+// //       },
+// //     ),
+// //   );
+// // }
 
-  // ---------------- Dialogs & Utilities ----------------
+// // Widget _buildFilesRow(List<String> files) {
+// //   return SizedBox(
+// //     height: 52,
+// //     child: ListView.separated(
+// //       scrollDirection: Axis.horizontal,
+// //       itemCount: files.length,
+// //       separatorBuilder: (_, __) => const SizedBox(width: 8),
+// //       itemBuilder: (context, i) {
+// //         final f = files[i];
+// //         return GestureDetector(
+// //           onTap: () => _openFileDialog(f),
+// //           child: Container(
+// //             padding: const EdgeInsets.symmetric(horizontal: 12),
+// //             decoration: BoxDecoration(
+// //               color: Colors.grey.shade200,
+// //               borderRadius: BorderRadius.circular(10),
+// //               border: Border.all(color: AppColor.primaryColor, width: 0.3),
+// //             ),
+// //             child: Row(
+// //               children: [
+// //                 const Icon(Icons.picture_as_pdf, color: Colors.red),
+// //                 const SizedBox(width: 8),
+// //                 Text(f),
+// //               ],
+// //             ),
+// //           ),
+// //         );
+// //       },
+// //     ),
+// //   );
+// // }
 
-  // فتح عارض صور مع أزرار تنقل
-  void _openImageViewer(int startIndex, List<String> images) {
-    final controller = PageController(initialPage: startIndex);
-    int current = startIndex;
+// Widget _buildBottomRow(ComplaintModel complaint) {
+//   return Row(
+//     children: [
+//       // الرقم المرجعي على اليمين (بسبب RTL)
+//       Expanded(
+//         child: Text(
+//           'الرقم المرجعي: ${complaint.referenceNumber}',
+//           style: TextStyle(color: Colors.grey.shade700),
+//         ),
+//       ),
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-              insetPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 24,
-              ),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.70,
-                child: Column(
-                  children: [
-                    // العنوان مع زر الإغلاق
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          CloseButton(),
-                          Text(
-                            "المرفقات",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: 40),
-                        ],
-                      ),
-                    ),
+//       // حالة الشكوى كـ capsule
+//       Container(
+//         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//         decoration: BoxDecoration(
+//           color: _statusColor(complaint.status).withOpacity(0.12),
+//           borderRadius: BorderRadius.circular(12),
+//         ),
+//         child: Text(
+//           complaint.status,
+//           style: TextStyle(
+//             color: _statusColor(complaint.status),
+//             fontWeight: FontWeight.bold,
+//           ),
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
-                    // الصور
-                    Expanded(
-                      child: PageView.builder(
-                        controller: controller,
-                        itemCount: images.length,
-                        onPageChanged: (i) => setState(() => current = i),
-                        itemBuilder: (context, index) {
-                          return InteractiveViewer(
-                            child: Image.asset(
-                              images[index],
-                              fit: BoxFit.contain,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+// Color _statusColor(String status) {
+//   switch (status) {
+//     case 'منجزة':
+//       return Colors.green;
+//     case 'قيد المعالجة':
+//       return Colors.orange;
+//     case 'مرفوضة':
+//       return Colors.red;
+//     default:
+//       return Colors.blueGrey;
+//   }
+// }
 
-                    const SizedBox(height: 12),
+// // ---------------- Dialogs & Utilities ----------------
 
-                    // النقاط
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        images.length,
-                        (i) => AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width: current == i ? 12 : 8,
-                          height: current == i ? 12 : 8,
-                          decoration: BoxDecoration(
-                            color:
-                                current == i
-                                    ? AppColor.primaryColor
-                                    : Colors.grey.shade400,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                    ),
+// // فتح عارض صور مع أزرار تنقل
+// // void _openImageViewer(int startIndex, List<String> images) {
+// //   final controller = PageController(initialPage: startIndex);
+// //   int current = startIndex;
 
-                    const SizedBox(height: 12),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+// //   showDialog(
+// //     context: context,
+// //     builder: (context) {
+// //       return StatefulBuilder(
+// //         builder: (context, setState) {
+// //           return Dialog(
+// //             shape: RoundedRectangleBorder(
+// //               borderRadius: BorderRadius.circular(14),
+// //             ),
+// //             insetPadding: const EdgeInsets.symmetric(
+// //               horizontal: 12,
+// //               vertical: 24,
+// //             ),
+// //             child: SizedBox(
+// //               height: MediaQuery.of(context).size.height * 0.70,
+// //               child: Column(
+// //                 children: [
+// //                   // العنوان مع زر الإغلاق
+// //                   Padding(
+// //                     padding: const EdgeInsets.all(10),
+// //                     child: Row(
+// //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// //                       children: const [
+// //                         CloseButton(),
+// //                         Text(
+// //                           "المرفقات",
+// //                           style: TextStyle(
+// //                             fontSize: 18,
+// //                             fontWeight: FontWeight.bold,
+// //                           ),
+// //                         ),
+// //                         SizedBox(width: 40),
+// //                       ],
+// //                     ),
+// //                   ),
 
-  // فتح dialog للملفات
-  void _openFileDialog(String filename) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(14),
-            width: 320,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    const Text(
-                      'عرض الملف',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(width: 40),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                ListTile(
-                  leading: const Icon(Icons.picture_as_pdf, color: Colors.red),
-                  title: Text(filename),
-                  subtitle: const Text('اضغط لتحميل الملف (محاكاة)'),
-                  onTap: () {
-                    // هنا يمكنك ربط تنزيل حقيقي
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('تم تحميل $filename (محاكاة)')),
-                    );
-                  },
-                ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+// //                   // الصور
+// //                   Expanded(
+// //                     child: PageView.builder(
+// //                       controller: controller,
+// //                       itemCount: images.length,
+// //                       onPageChanged: (i) => setState(() => current = i),
+// //                       itemBuilder: (context, index) {
+// //                         return InteractiveViewer(
+// //                           child: Image.asset(
+// //                             images[index],
+// //                             fit: BoxFit.contain,
+// //                           ),
+// //                         );
+// //                       },
+// //                     ),
+// //                   ),
 
-  // Dialog عرض الملاحظات (View only) - يوجد أيقون إغلاق فقط
-  void _showNotesDialog(String notes) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.grey.shade100,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(14),
-            height: MediaQuery.of(context).size.height * 0.55, // 👈 أطول
-            child: Column(
-              children: [
-                Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.close,color: AppColor.primaryColor,),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        const Expanded(
-                          child: Text(
-                            'ملاحظات الجهة',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: AppColor.primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 48),
-                      ],
-                    ),
-                const SizedBox(height: 4),
+// //                   const SizedBox(height: 12),
 
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(14.0),
-                        child: Text(
-                          notes,
-                          style: const TextStyle(fontSize: 16, height: 1.4),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+// //                   // النقاط
+// //                   Row(
+// //                     mainAxisAlignment: MainAxisAlignment.center,
+// //                     children: List.generate(
+// //                       images.length,
+// //                       (i) => AnimatedContainer(
+// //                         duration: const Duration(milliseconds: 250),
+// //                         margin: const EdgeInsets.symmetric(horizontal: 4),
+// //                         width: current == i ? 12 : 8,
+// //                         height: current == i ? 12 : 8,
+// //                         decoration: BoxDecoration(
+// //                           color:
+// //                               current == i
+// //                                   ? AppColor.primaryColor
+// //                                   : Colors.grey.shade400,
+// //                           shape: BoxShape.circle,
+// //                         ),
+// //                       ),
+// //                     ),
+// //                   ),
 
-  // Dialog لطلب معلومات إضافية: يعرض الطلب + حقل reply مع سهم الإرسال + أيقونة لإضافة مرفقات
-void _showExtraRequestDialog(BuildContext context) {
-  final TextEditingController replyController = TextEditingController();
+// //                   const SizedBox(height: 12),
+// //                 ],
+// //               ),
+// //             ),
+// //           );
+// //         },
+// //       );
+// //     },
+// //   );
+// // }
 
-  // قائمة الردود
-  final List<Map<String, dynamic>> replies = [
-    {"text": "هذا هو الطلب الأساسي من الجهة.", "isRequest": true},
-    {"text": "مرحبا، نحتاج مزيداً من الإيضاح.", "isRequest": false},
-  ];
+// // فتح dialog للملفات
+// // void _openFileDialog(String filename) {
+// //   showDialog(
+// //     context: context,
+// //     builder: (context) {
+// //       return Dialog(
+// //         shape: RoundedRectangleBorder(
+// //           borderRadius: BorderRadius.circular(12),
+// //         ),
+// //         child: Container(
+// //           padding: const EdgeInsets.all(14),
+// //           width: 320,
+// //           child: Column(
+// //             mainAxisSize: MainAxisSize.min,
+// //             children: [
+// //               Row(
+// //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// //                 children: [
+// //                   IconButton(
+// //                     icon: const Icon(Icons.close),
+// //                     onPressed: () => Navigator.pop(context),
+// //                   ),
+// //                   const Text(
+// //                     'عرض الملف',
+// //                     style: TextStyle(
+// //                       fontWeight: FontWeight.bold,
+// //                       fontSize: 16,
+// //                     ),
+// //                   ),
+// //                   const SizedBox(width: 40),
+// //                 ],
+// //               ),
+// //               const SizedBox(height: 8),
+// //               ListTile(
+// //                 leading: const Icon(Icons.picture_as_pdf, color: Colors.red),
+// //                 title: Text(filename),
+// //                 subtitle: const Text('اضغط لتحميل الملف (محاكاة)'),
+// //                 onTap: () {
+// //                   // هنا يمكنك ربط تنزيل حقيقي
+// //                   Navigator.pop(context);
+// //                   ScaffoldMessenger.of(context).showSnackBar(
+// //                     SnackBar(content: Text('تم تحميل $filename (محاكاة)')),
+// //                   );
+// //                 },
+// //               ),
+// //               const SizedBox(height: 8),
+// //             ],
+// //           ),
+// //         ),
+// //       );
+// //     },
+// //   );
+// // }
 
-  showDialog(
-    context: context,
-    // barrierDismissible: false,
-    builder: (context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Dialog(
-            backgroundColor:Colors.grey.shade100 ,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-              height: MediaQuery.of(context).size.height * 0.70, // 70%
-              child: Column(
-                children: [
-                  // ------------------ HEADER ------------------ //
-                 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        child: Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.close,color: AppColor.primaryColor,),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                          const Expanded(
-                            child: Text(
-                              'طلب معلومات إضافية',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: AppColor.primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 48),
-                        ],
-                                            ),
-                      ),
-                  // ),
+// // Dialog عرض الملاحظات (View only) - يوجد أيقون إغلاق فقط
+// void _showNotesDialog(BuildContext context, List<Comment> notes) {
+//   showDialog(
+//     context: context,
+//     builder: (context) {
+//       return Dialog(
+//         backgroundColor: Colors.grey.shade100,
+//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+//         child: Container(
+//           padding: const EdgeInsets.all(14),
+//           height: MediaQuery.of(context).size.height * 0.55,
+//           child: Column(
+//             children: [
+//               Row(
+//                 children: [
+//                   IconButton(
+//                     icon: const Icon(Icons.close, color: AppColor.primaryColor),
+//                     onPressed: () => Navigator.pop(context),
+//                   ),
+//                   const Expanded(
+//                     child: Text(
+//                       'ملاحظات الجهة',
+//                       textAlign: TextAlign.center,
+//                       style: TextStyle(
+//                         color: AppColor.primaryColor,
+//                         fontWeight: FontWeight.bold,
+//                         fontSize: 16,
+//                       ),
+//                     ),
+//                   ),
+//                   const SizedBox(width: 48),
+//                 ],
+//               ),
 
-                  // const Divider(height: 1),
+//               const SizedBox(height: 4),
 
-                  // ------------------ BODY (Scrollable) ------------------ //
-                  Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: replies.length,
-                      itemBuilder: (context, index) {
-                        final item = replies[index];
-                        final isRequest = item["isRequest"];
+//               Expanded(
+//                 child: ListView.builder(
+//                   itemCount: notes.length,
+//                   itemBuilder: (context, index) {
+//                     return Card(
+//                       elevation: 1,
+//                       margin: const EdgeInsets.symmetric(vertical: 6),
+//                       shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(10),
+//                       ),
+//                       child: Padding(
+//                         padding: const EdgeInsets.all(12.0),
+//                         child: Row(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Text(
+//                               "${index + 1}. ",
+//                               style: const TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 15,
+//                                 color: AppColor.primaryColor,
+//                               ),
+//                             ),
+//                             Expanded(
+//                               child: Text(
+//                                 notes[index].text,
+//                                 style: const TextStyle(
+//                                   fontSize: 15,
+//                                   height: 1.4,
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
 
-                        return Align(
-                          // alignment:
-                          //     isRequest ? Alignment.centerLeft : Alignment.centerRight,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                            padding: const EdgeInsets.all(12),
-                            constraints: const BoxConstraints(maxWidth: 260),
-                            decoration: BoxDecoration(
-                              color: isRequest
-                                  ? Colors.white
-                                  : Colors.green.shade50,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              item["text"],
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+// // Dialog لطلب معلومات إضافية: يعرض الطلب + حقل reply مع سهم الإرسال + أيقونة لإضافة مرفقات
+// void _showExtraRequestDialog(BuildContext context) {
+//   final TextEditingController replyController = TextEditingController();
 
-                  // ------------------ INPUT BAR (Fixed Bottom) ------------------ //
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(16),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        // زر المرفقات
-                        IconButton(
-                          onPressed: () {
-                          },
-                          icon: const Icon(Icons.attach_file),
-                        ),
+//   // قائمة الردود
+//   final List<Map<String, dynamic>> replies = [
+//     {"text": "هذا هو الطلب الأساسي من الجهة.", "isRequest": true},
+//     {"text": "مرحبا، نحتاج مزيداً من الإيضاح.", "isRequest": false},
+//   ];
 
-                        // حقل الإدخال
-                        Expanded(
-                          child: TextField(
-                            controller: replyController,
-                            decoration: InputDecoration(
-                              hintText: "اكتب ردك...",
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 10,
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                          ),
-                        ),
+//   showDialog(
+//     context: context,
+//     // barrierDismissible: false,
+//     builder: (context) {
+//       return StatefulBuilder(
+//         builder: (context, setState) {
+//           return Dialog(
+//             backgroundColor: Colors.grey.shade100,
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(16),
+//             ),
+//             child: Container(
+//               padding: const EdgeInsets.symmetric(vertical: 14),
+//               height: MediaQuery.of(context).size.height * 0.70, // 70%
+//               child: Column(
+//                 children: [
+//                   // ------------------ HEADER ------------------ //
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 14),
+//                     child: Row(
+//                       children: [
+//                         IconButton(
+//                           icon: const Icon(
+//                             Icons.close,
+//                             color: AppColor.primaryColor,
+//                           ),
+//                           onPressed: () => Navigator.pop(context),
+//                         ),
+//                         const Expanded(
+//                           child: Text(
+//                             'طلب معلومات إضافية',
+//                             textAlign: TextAlign.center,
+//                             style: TextStyle(
+//                               color: AppColor.primaryColor,
+//                               fontWeight: FontWeight.bold,
+//                               fontSize: 16,
+//                             ),
+//                           ),
+//                         ),
+//                         const SizedBox(width: 48),
+//                       ],
+//                     ),
+//                   ),
+//                   // ),
 
-                        const SizedBox(width: 8),
+//                   // const Divider(height: 1),
 
-                        // زر إرسال
-                        CircleAvatar(
-                          radius: 22,
-                          backgroundColor: AppColor.primaryColor,
-                          child: IconButton(
-                            onPressed: () {
-                              if (replyController.text.trim().isEmpty) return;
-                          
-                              setState(() {
-                                replies.add({
-                                  "text": replyController.text.trim(),
-                                  "isRequest": false,
-                                });
-                              });
-                          
-                              replyController.clear();
-                            },
-                            icon: const Icon(Icons.send, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
-}
+//                   // ------------------ BODY (Scrollable) ------------------ //
+//                   Expanded(
+//                     child: ListView.builder(
+//                       padding: const EdgeInsets.all(16),
+//                       itemCount: replies.length,
+//                       itemBuilder: (context, index) {
+//                         final item = replies[index];
+//                         final isRequest = item["isRequest"];
 
+//                         return Align(
+//                           // alignment:
+//                           //     isRequest ? Alignment.centerLeft : Alignment.centerRight,
+//                           child: Container(
+//                             margin: const EdgeInsets.symmetric(vertical: 6),
+//                             padding: const EdgeInsets.all(12),
+//                             constraints: const BoxConstraints(maxWidth: 260),
+//                             decoration: BoxDecoration(
+//                               color:
+//                                   isRequest
+//                                       ? Colors.white
+//                                       : Colors.green.shade50,
+//                               borderRadius: BorderRadius.circular(12),
+//                             ),
+//                             child: Text(
+//                               item["text"],
+//                               style: const TextStyle(fontSize: 14),
+//                             ),
+//                           ),
+//                         );
+//                       },
+//                     ),
+//                   ),
 
+//                   // ------------------ INPUT BAR (Fixed Bottom) ------------------ //
+//                   Container(
+//                     padding: const EdgeInsets.symmetric(
+//                       horizontal: 10,
+//                       vertical: 8,
+//                     ),
+//                     decoration: BoxDecoration(
+//                       color: Colors.grey.shade100,
+//                       borderRadius: const BorderRadius.vertical(
+//                         bottom: Radius.circular(16),
+//                       ),
+//                     ),
+//                     child: Row(
+//                       children: [
+//                         // زر المرفقات
+//                         IconButton(
+//                           onPressed: () {},
+//                           icon: const Icon(Icons.attach_file),
+//                         ),
 
-}
+//                         // حقل الإدخال
+//                         Expanded(
+//                           child: TextField(
+//                             controller: replyController,
+//                             decoration: InputDecoration(
+//                               hintText: "اكتب ردك...",
+//                               contentPadding: const EdgeInsets.symmetric(
+//                                 horizontal: 12,
+//                                 vertical: 10,
+//                               ),
+//                               filled: true,
+//                               fillColor: Colors.white,
+//                               border: OutlineInputBorder(
+//                                 borderRadius: BorderRadius.circular(12),
+//                                 borderSide: BorderSide.none,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+
+//                         const SizedBox(width: 8),
+
+//                         // زر إرسال
+//                         CircleAvatar(
+//                           radius: 22,
+//                           backgroundColor: AppColor.primaryColor,
+//                           child: IconButton(
+//                             onPressed: () {
+//                               if (replyController.text.trim().isEmpty) return;
+
+//                               setState(() {
+//                                 replies.add({
+//                                   "text": replyController.text.trim(),
+//                                   "isRequest": false,
+//                                 });
+//                               });
+
+//                               replyController.clear();
+//                             },
+//                             icon: const Icon(Icons.send, color: Colors.white),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           );
+//         },
+//       );
+//     },
+//   );
+// }
