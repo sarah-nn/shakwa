@@ -164,16 +164,17 @@ import 'package:shakwa/Data/Models/complaint_details_model.dart';
 void showExtraRequestDialog(
   BuildContext context,
   List<Comment> data,
-  int complaintId, // نحتاج معرف الشكوى لإرسال الرد
+  int complaintId, // معرف الشكوى لإرسال الرد
 ) {
   final TextEditingController replyController = TextEditingController();
 
-  final List<Map<String, dynamic>> replies = data.map((comment) {
-    return {
-      "text": comment.text,
+  // تحويل التعليقات إلى قائمة متوافقة مع Object?
+  final List<Map<String, Object?>> replies = data.map((comment) {
+    return <String, Object?>{
+      "text": comment.text ?? '',
       "isRequest": comment.complaintType == "info_request",
-      "senderRole": comment.user.role,
-      "date": comment.createdAt,
+      "senderRole": comment.user.role ?? '',
+      // "date": comment.createdAt ?? DateTime.now().toString(),
     };
   }).toList();
 
@@ -194,7 +195,8 @@ void showExtraRequestDialog(
               height: MediaQuery.of(context).size.height * 0.70,
               child: Column(
                 children: [
-  Padding(
+                  // ---------- HEADER ---------- //
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
                     child: Row(
                       children: [
@@ -216,15 +218,16 @@ void showExtraRequestDialog(
                         const SizedBox(width: 48),
                       ],
                     ),
-                  ),                  
-                  // ---------------- BODY ---------------- //
+                  ),
+
+                  // ---------- BODY (قائمة التعليقات) ---------- //
                   Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(16),
                       itemCount: replies.length,
                       itemBuilder: (context, index) {
                         final item = replies[index];
-                        final isUser = item["senderRole"] == "user";
+                        final isUser = (item["senderRole"] as String?) == "user";
 
                         return Align(
                           alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -240,7 +243,7 @@ void showExtraRequestDialog(
                               ),
                             ),
                             child: Text(
-                              item["text"],
+                              item["text"] as String? ?? '',
                               style: const TextStyle(fontSize: 14),
                             ),
                           ),
@@ -249,7 +252,7 @@ void showExtraRequestDialog(
                     ),
                   ),
 
-                  // ---------------- INPUT BAR ---------------- //
+                  // ---------- INPUT BAR (إرسال رد) ---------- //
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
@@ -288,9 +291,9 @@ void showExtraRequestDialog(
                               final text = replyController.text.trim();
                               if (text.isEmpty) return;
 
-                              // 1️⃣ تحديث القائمة محلياً داخل الـ dialog
+                              // ✅ إضافة الرد محلياً داخل الـ dialog
                               setState(() {
-                                replies.add({
+                                replies.add(<String, Object?>{
                                   "text": text,
                                   "isRequest": false,
                                   "senderRole": "user",
@@ -298,7 +301,7 @@ void showExtraRequestDialog(
                                 });
                               });
 
-                              // 2️⃣ إرسال الرد باستخدام Cubit
+                              // ✅ إرسال الرد باستخدام Cubit
                               detailsCubit.sendReply(
                                 complaintId: complaintId,
                                 text: text,
