@@ -40,4 +40,17 @@ class AuthRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
+  Future<Either<Failure, String>> verify(Map body) async {
+    try {
+      await api.post(EndPoints.verify, body);
+
+      return const Right("verify done");
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
+  }
 }

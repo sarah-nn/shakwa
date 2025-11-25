@@ -17,7 +17,6 @@ class AuthCubit extends Cubit<AuthState> {
   final TextEditingController fullname = TextEditingController();
 
   signUp() async {
-  signUp() async {
     emit(AuthLoading());
     final result = await authRepo.signUp({
       'full_name': fullname.text,
@@ -35,11 +34,26 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   signIn() async {
-  signIn() async {
     emit(AuthLoading());
     final result = await authRepo.signIn({
       'email': email.text,
       'password': password.text,
+    });
+    result.fold(
+      (failure) {
+        emit(AuthFail(errMssg: failure.errorMessage));
+      },
+      (success) {
+        emit(AuthSuccess());
+      },
+    );
+  }
+
+  verify() async {
+    emit(AuthLoading());
+    final result = await authRepo.verify({
+      'email': email.text,
+      'otp': password.text,
     });
     result.fold(
       (failure) {

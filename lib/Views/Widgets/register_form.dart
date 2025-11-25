@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/auth/auth_cubit.dart';
+import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/function.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
@@ -82,7 +83,7 @@ class RegisterForm extends StatelessWidget {
               CustomTextField(
                 baseText: "تأكيد كلمة المرور:",
                 isPassword: true,
-                passToggle: true,
+                // passToggle: true,
                 hint: "أكد كلمة المرور",
                 controller: cubit.rePassword,
                 keyboardType: TextInputType.text,
@@ -97,7 +98,8 @@ class RegisterForm extends StatelessWidget {
                   : CustomButton(
                     text: "إنشاء حساب",
                     onTap: () {
-                      cubit.signUp();
+                      // cubit.signUp();
+                      GoRouter.of(context).push(AppRouter.verifyCodeView);
                     },
                   ),
               CustomTextButtomAuth(

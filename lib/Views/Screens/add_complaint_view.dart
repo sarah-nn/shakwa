@@ -44,7 +44,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: NormalAppBar(text: 'إضافة شكوى'),
+      //appBar: NormalAppBar(text: 'إضافة شكوى'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         child: Form(
@@ -146,7 +146,6 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                   ),
               const SizedBox(height: 16),
 
-
               // الموقع
               const Text('الموقع', style: TextStyle(fontSize: 14)),
               const SizedBox(height: 8),
@@ -169,9 +168,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                 ),
               ),
 
-
               const SizedBox(height: 16),
-
 
               // الوصف التفصيلي
               const Text('الوصف التفصيلي', style: TextStyle(fontSize: 14)),
@@ -187,9 +184,6 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                     borderSide: BorderSide(
                       color: AppColor.primaryColor.withOpacity(0.7),
                     ),
-                    borderSide: BorderSide(
-                      color: AppColor.primaryColor.withOpacity(0.7),
-                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -198,9 +192,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                 ),
               ),
 
-
               const SizedBox(height: 20),
-
 
               // المرفقات
               const Text('المرفقات (اختياري)', style: TextStyle(fontSize: 14)),
@@ -261,9 +253,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                 ),
               ),
 
-
               const SizedBox(height: 28),
-
 
               // زر الإرسال
               //
@@ -300,12 +290,6 @@ class _AddComplaintViewState extends State<AddComplaintView> {
     required List<String> items,
     required Function(String?) onChanged,
   }) {
-  Widget _buildDropdown({
-    String? value,
-    required String hint,
-    required List<String> items,
-    required Function(String?) onChanged,
-  }) {
     return Container(
       height: 52,
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -320,15 +304,6 @@ class _AddComplaintViewState extends State<AddComplaintView> {
           hint: Text(hint, textAlign: TextAlign.right),
           icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
           onChanged: onChanged,
-          items:
-              items
-                  .map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e, textAlign: TextAlign.right),
-                    ),
-                  )
-                  .toList(),
           items:
               items
                   .map(

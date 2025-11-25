@@ -15,7 +15,7 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: NormalAppBar(text: "إنشاء حساب"),
+      // appBar: NormalAppBar(text: "إنشاء حساب"),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
