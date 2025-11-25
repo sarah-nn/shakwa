@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/auth/auth_cubit.dart';
+import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/function.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
@@ -69,7 +70,11 @@ class LoginForm extends StatelessWidget {
               ),
               SizedBox(height: 15),
               state is AuthLoading
-                  ? CircularProgressIndicator()
+                  ? Center(
+                    child: CircularProgressIndicator(
+                      color: AppColor.primaryColor,
+                    ),
+                  )
                   : CustomButton(
                     text: "تسجيل الدخول",
                     onTap: () {

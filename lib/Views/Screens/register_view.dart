@@ -14,11 +14,12 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: NormalAppBar(text: "إنشاء حساب"),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 50),
             Text(
@@ -37,6 +38,8 @@ class RegisterView extends StatelessWidget {
                       AuthCubit(authRepo: AuthRepo(DioConsumer(Dio()))),
               child: RegisterForm(),
             ),
+
+            SizedBox(height: 20),
           ],
         ),
       ),

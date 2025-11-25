@@ -19,12 +19,6 @@ void setUpAppService() async {
 
   getit.registerLazySingleton<Dio>(() => Dio());
   getit.registerLazySingleton<DioConsumer>(() => DioConsumer(getit.get<Dio>()));
-
-  getit<TokenHandler>().hasToken(TokenHandler.studentTokenKey)
-      ? print(
-        "${TokenHandler.studentTokenKey}== ${getit<TokenHandler>().getToken(TokenHandler.studentTokenKey)}",
-      )
-      : print(
-        "${TokenHandler.parentTokenKey}== ${getit<TokenHandler>().getToken(TokenHandler.parentTokenKey)}",
-      );
+  final accessToken = await CacheHelper.getSecureData(key: "accessToken");
+  print("final accessToken =  $accessToken");
 }

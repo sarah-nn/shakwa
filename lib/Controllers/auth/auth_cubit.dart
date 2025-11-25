@@ -12,16 +12,15 @@ class AuthCubit extends Cubit<AuthState> {
 
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-
+  final TextEditingController rePassword = TextEditingController();
   final TextEditingController phoneNumber = TextEditingController();
   final TextEditingController fullname = TextEditingController();
 
-  signIn() async {
+  signUp() async {
     emit(AuthLoading());
     final result = await authRepo.signUp({
       'full_name': fullname.text,
       'email': email.text,
-      'phone_number': phoneNumber.text,
       'password': password.text,
     });
     result.fold(
@@ -34,7 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  signUp() async {
+  signIn() async {
     emit(AuthLoading());
     final result = await authRepo.signIn({
       'email': email.text,

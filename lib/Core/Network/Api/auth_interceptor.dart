@@ -22,41 +22,50 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
+    // تحقق من أن الخطأ 401
     if (err.response?.statusCode == 401) {
-      // Token Expired
       final refreshToken = await CacheHelper.getSecureData(key: "refreshToken");
 
+      // تحقق من وجود refresh token
       if (refreshToken != null) {
+        // **تجنب حلقة لانهائية**
+        final isRefreshRequest = err.requestOptions.path.contains(
+          EndPoints.refreshToken,
+        );
+        if (isRefreshRequest) {
+          // فشل تحديث الـ token → logout
+          return handler.next(err);
+        }
+
         try {
+          // طلب تحديث الـ token
           final refreshResponse = await dio.post(
             EndPoints.refreshToken,
             data: {"refreshToken": refreshToken},
           );
+
           final newAccessToken = refreshResponse.data['data']["accessToken"];
 
-          // Save new token
+          // حفظ الـ token الجديد
           await CacheHelper.setSecureData(
             key: "accessToken",
             value: newAccessToken,
           );
-          await CacheHelper.setSecureData(
-            key: "refreshToken",
-            value: refreshToken,
-          );
 
-          // Retry original request
-          err.requestOptions.headers["Authorization"] =
-              "Bearer $newAccessToken";
+          // إعادة إرسال الطلب الأصلي بالـ token الجديد
+          final opts = err.requestOptions;
+          opts.headers["Authorization"] = "Bearer $newAccessToken";
 
-          final cloneReq = await dio.fetch(err.requestOptions);
+          final cloneReq = await dio.fetch(opts);
           return handler.resolve(cloneReq);
         } catch (e) {
-          // Refresh failed → force logout
+          // فشل التحديث → logout
           return handler.next(err);
         }
       }
     }
 
+    // أي خطأ آخر
     return handler.next(err);
   }
 }

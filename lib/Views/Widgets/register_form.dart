@@ -13,6 +13,7 @@ class RegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String email = '';
     return Form(
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
@@ -79,18 +80,18 @@ class RegisterForm extends StatelessWidget {
                   return validInput(val!, 8, 100, "password");
                 },
               ),
-              // CustomTextField(
-              //   baseText: "تأكيد كلمة المرور:",
-              //   isPassword: true,
-              //   passToggle: true,
-              //   hint: "أكد كلمة المرور",
-              //   controller: cubit.passWordController,
-              //   keyboardType: TextInputType.text,
-              //   icon: Icons.lock_outline,
-              //   validator: (val) {
-              //     return validInput(val!, 8, 100, "password");
-              //   },
-              // ),
+              CustomTextField(
+                baseText: "تأكيد كلمة المرور:",
+                isPassword: true,
+                passToggle: true,
+                hint: "أكد كلمة المرور",
+                controller: cubit.rePassword,
+                keyboardType: TextInputType.text,
+                icon: Icons.lock_outline,
+                validator: (val) {
+                  return validInput(val!, 8, 100, "password");
+                },
+              ),
               SizedBox(height: 15),
               state is AuthLoading
                   ? CircularProgressIndicator()
