@@ -64,8 +64,6 @@ class AuthInterceptor extends Interceptor {
         }
       }
     }
-
-    // أي خطأ آخر
     return handler.next(err);
   }
 }

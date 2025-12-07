@@ -10,11 +10,7 @@ class ComplaintCard extends StatefulWidget {
   final ComplaintModel complaint;
   final VoidCallback? onUpdated;
 
-  const ComplaintCard({
-    super.key,
-    required this.complaint,
-    this.onUpdated,
-  });
+  const ComplaintCard({super.key, required this.complaint, this.onUpdated});
 
   @override
   State<ComplaintCard> createState() => _ComplaintCardState();
@@ -60,7 +56,7 @@ class _ComplaintCardState extends State<ComplaintCard> {
                     if (state is ComplaintDetailsLoading) {
                       return const Padding(
                         padding: EdgeInsets.all(12),
-                        child: CircularProgressIndicator(),
+                        child: Center(child: CircularProgressIndicator()),
                       );
                     }
 

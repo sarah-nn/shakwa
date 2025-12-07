@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "85421615466",
+    "project_id": "complaintsnoti",
+    "storage_bucket": "complaintsnoti.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85421615466:android:3bf1d3682de1f54a2c9d13",
+        "android_client_info": {
+          "package_name": "com.example.shakwa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFKSTH-u6-UWUZGLe5gCUTCKI_a_tM1B4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

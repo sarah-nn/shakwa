@@ -15,7 +15,7 @@ class DioConsumer implements Api {
       receiveTimeout: const Duration(seconds: 30),
       receiveDataWhenStatusError: true,
       headers: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
     );

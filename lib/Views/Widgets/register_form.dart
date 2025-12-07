@@ -19,7 +19,7 @@ class RegisterForm extends StatelessWidget {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            GoRouter.of(context).push(AppRouter.homePage);
+            GoRouter.of(context).push(AppRouter.verifyCodeView);
           }
           if (state is AuthFail) {
             showDialog(
@@ -94,11 +94,11 @@ class RegisterForm extends StatelessWidget {
               ),
               SizedBox(height: 15),
               state is AuthLoading
-                  ? CircularProgressIndicator()
+                  ? Center(child: CircularProgressIndicator())
                   : CustomButton(
                     text: "إنشاء حساب",
                     onTap: () {
-                      // cubit.signUp();
+                      cubit.signUp();
                       // print(cubit.email.text);
                       // email = cubit.email.text;
                       // print(email);
@@ -106,7 +106,8 @@ class RegisterForm extends StatelessWidget {
                         key: "email",
                         value: cubit.email.text,
                       );
-                      GoRouter.of(context).push(AppRouter.verifyCodeView);
+
+                      ///  GoRouter.of(context).push(AppRouter.verifyCodeView);
                     },
                   ),
               CustomTextButtomAuth(
