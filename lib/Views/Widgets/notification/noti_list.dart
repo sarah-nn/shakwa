@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shakwa/Views/Widgets/notifiaction_card.dart';
+import 'package:shakwa/Views/Widgets/notification/notifiaction_card.dart';
 import 'package:shakwa/dummy_data.dart';
 
 class NotiList extends StatelessWidget {

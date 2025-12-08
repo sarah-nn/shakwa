@@ -73,9 +73,20 @@ abstract class Routing {
               child: AddComplaintView(),
             ),
       ),
+      // GoRoute(
+      //   path: AppRouter.homePage,
+      //   builder: (context, state) => const AllComplaintsView(),
+      // ),
       GoRoute(
         path: AppRouter.homePage,
-        builder: (context, state) => const AllComplaintsView(),
+        builder:
+            (context, state) => BlocProvider(
+              create:
+                  (context) => ComplaintCubit(
+                    showComplaintRepo: ShowComplaintRepo(DioConsumer(Dio())),
+                  ),
+              child: const AllComplaintsView(),
+            ),
       ),
       GoRoute(
         path: AppRouter.verifyCodeView,

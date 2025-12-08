@@ -6,7 +6,7 @@ import 'package:shakwa/Controllers/complaint_details/complaint_details_cubit.dar
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Models/complaint_model.dart';
 import 'package:shakwa/Data/Repos/show_complain_repo.dart';
-import 'package:shakwa/Views/Widgets/complaints_card.dart';
+import 'package:shakwa/Views/Widgets/complaint%20card/complaints_card.dart';
 
 class ComplaintsList extends StatefulWidget {
   const ComplaintsList({super.key});

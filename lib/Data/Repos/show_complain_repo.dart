@@ -63,6 +63,8 @@ class ShowComplaintRepo {
   }
 
   Future<Either<Failure, bool>> sendReply({
+
+  Future<Either<Failure, bool>> sendReply({
     required int complaintId,
     required String text,
   }) async {
@@ -70,6 +72,10 @@ class ShowComplaintRepo {
       // تجهيز البيانات التي سترسل في جسم الطلب
 
       // إرسال POST
+      final response = await api.post(EndPoints.sendReply, {
+        "complaint_id": complaintId,
+        "comment_text": text,
+      });
       final response = await api.post(EndPoints.sendReply, {
         "complaint_id": complaintId,
         "comment_text": text,

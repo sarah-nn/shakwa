@@ -8,7 +8,7 @@ import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Core/function.dart';
 import 'package:shakwa/Core/service_locator.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
-import 'package:shakwa/Views/Widgets/custom_text_button.dart';
+import 'package:shakwa/Views/Widgets/auth/custom_text_button.dart';
 import 'package:shakwa/Views/Widgets/custom_text_field.dart';
 
 class LoginForm extends StatelessWidget {

@@ -18,4 +18,7 @@ final class ComplaintDetailsFailure extends ComplaintDetailsState {
   ComplaintDetailsFailure({required this.errMsg});
 }
 
-
+class ComplaintRepliesUpdated extends ComplaintDetailsState {
+  final List<Comment> replies;
+  ComplaintRepliesUpdated({required this.replies});
+}

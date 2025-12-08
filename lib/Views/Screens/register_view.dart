@@ -5,7 +5,7 @@ import 'package:shakwa/Controllers/auth/auth_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
-import 'package:shakwa/Views/Widgets/register_form.dart';
+import 'package:shakwa/Views/Widgets/auth/register_form.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key});
@@ -14,7 +14,7 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      // appBar: NormalAppBar(text: "إنشاء حساب"),
+     // appBar: customAppBar("إنشاء حساب"),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
