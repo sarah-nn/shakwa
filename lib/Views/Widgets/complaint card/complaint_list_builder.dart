@@ -8,14 +8,14 @@ import 'package:shakwa/Data/Models/complaint_model.dart';
 import 'package:shakwa/Data/Repos/show_complain_repo.dart';
 import 'package:shakwa/Views/Widgets/complaint%20card/complaints_card.dart';
 
-class ComplaintsList extends StatefulWidget {
-  const ComplaintsList({super.key});
+class ComplaintListBuilder extends StatefulWidget {
+  const ComplaintListBuilder({super.key});
 
   @override
-  State<ComplaintsList> createState() => _ComplaintsListState();
+  State<ComplaintListBuilder> createState() => _ComplaintListBuilderState();
 }
 
-class _ComplaintsListState extends State<ComplaintsList> {
+class _ComplaintListBuilderState extends State<ComplaintListBuilder> {
   final ScrollController _scrollController = ScrollController();
 
   @override

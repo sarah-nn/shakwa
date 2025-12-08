@@ -62,7 +62,7 @@ class ShowComplaintRepo {
     }
   }
 
-  Future<Either<Failure, bool>> sendReply({
+  // Future<Either<Failure, bool>> sendReply({
 
   Future<Either<Failure, bool>> sendReply({
     required int complaintId,
@@ -76,10 +76,10 @@ class ShowComplaintRepo {
         "complaint_id": complaintId,
         "comment_text": text,
       });
-      final response = await api.post(EndPoints.sendReply, {
-        "complaint_id": complaintId,
-        "comment_text": text,
-      });
+      // final response = await api.post(EndPoints.sendReply, {
+      //   "complaint_id": complaintId,
+      //   "comment_text": text,
+      // });
 
       // يمكنك التحقق من الحالة
       if (response['status'] == 'success') {
