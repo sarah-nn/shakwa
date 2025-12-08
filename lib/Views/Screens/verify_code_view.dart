@@ -48,20 +48,34 @@ class VerifyCodeView extends StatelessWidget {
                     // إزالة شرط AuthSuccess من هنا!
 
                     if (state is AuthLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 2,
+                        ),
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
                     }
                     if (state is AuthFail) {
                       // يمكنك تحسين عرض رسالة الخطأ هنا
-                      return Column(
-                        children: [
-                          Text(
-                            state.errMssg,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(height: 10),
-                          // إظهار حقول OTP مجدداً بعد الخطأ
-                          _buildOtpFields(context, cubit, email),
-                        ],
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.2,
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              "الرمز غير صحيح ! حاول مجدداً",
+
+                              style: const TextStyle(
+                                color: Colors.red,
+                                height: 5,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            // إظهار حقول OTP مجدداً بعد الخطأ
+                            _buildOtpFields(context, cubit, email),
+                          ],
+                        ),
                       );
                     }
 

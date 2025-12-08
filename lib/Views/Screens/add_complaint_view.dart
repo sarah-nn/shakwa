@@ -7,6 +7,7 @@ import 'package:shakwa/Controllers/govenment/govenment_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Data/Models/complaints_type_model.dart';
 import 'package:shakwa/Data/Models/government_model.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
 
 class AddComplaintView extends StatefulWidget {
@@ -43,7 +44,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: NormalAppBar(text: 'إضافة شكوى'),
+      appBar: customAppBar('إضافة شكوى'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         child: Form(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
+import 'package:shakwa/Core/cache_helper.dart';
+import 'package:shakwa/Core/service_locator.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
 
 class SplashView extends StatelessWidget {
@@ -9,6 +11,7 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoggedIn = getit<CacheHelper>().getData(key: "LoggedIn") ?? false;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -49,7 +52,11 @@ class SplashView extends StatelessWidget {
                 text: "ابدأ الآن",
 
                 onTap: () {
-                  GoRouter.of(context).pushReplacement(AppRouter.loginView);
+                  isLoggedIn
+                      ? GoRouter.of(context).pushReplacement(AppRouter.homePage)
+                      : GoRouter.of(
+                        context,
+                      ).pushReplacement(AppRouter.loginView);
                 },
               ),
               const SizedBox(height: 15),
