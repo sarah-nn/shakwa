@@ -7,9 +7,7 @@ void showNotesDialog(BuildContext context, List<Comment> notes) {
     context: context,
     builder: (context) {
       return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Container(
           padding: const EdgeInsets.all(12),
           height: MediaQuery.of(context).size.height * 0.55,
@@ -18,8 +16,7 @@ void showNotesDialog(BuildContext context, List<Comment> notes) {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.close,
-                        color: AppColor.primaryColor),
+                    icon: const Icon(Icons.close, color: AppColor.primaryColor),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const Expanded(

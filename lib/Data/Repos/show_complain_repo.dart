@@ -46,22 +46,17 @@ class ShowComplaintRepo {
       return Left(ServerFailure(e.toString()));
     }
   }
-Future<Either<Failure, bool>> sendReply({
+
+  Future<Either<Failure, bool>> sendReply({
     required int complaintId,
     required String text,
   }) async {
     try {
-      // تجهيز البيانات التي سترسل في جسم الطلب
-      
-
       // إرسال POST
-      final response = await api.post(
-        EndPoints.sendReply
-        ,{
-    "complaint_id":complaintId,
-    "comment_text":text
-},
-      );
+      final response = await api.post(EndPoints.sendReply, {
+        "complaint_id": complaintId,
+        "comment_text": text,
+      });
 
       // يمكنك التحقق من الحالة
       if (response['status'] == 'success') {
@@ -75,5 +70,4 @@ Future<Either<Failure, bool>> sendReply({
       return Left(ServerFailure(e.toString()));
     }
   }
-
 }

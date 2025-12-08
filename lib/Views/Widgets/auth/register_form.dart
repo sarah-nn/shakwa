@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/auth/auth_cubit.dart';
-import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
+import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Core/function.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
-import 'package:shakwa/Views/Widgets/custom_text_button.dart';
+import 'package:shakwa/Views/Widgets/auth/custom_text_button.dart';
 import 'package:shakwa/Views/Widgets/custom_text_field.dart';
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+class RegisterForm extends StatelessWidget {
+  const RegisterForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String email = '';
     return Form(
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            GoRouter.of(context).push(AppRouter.homePage);
+            GoRouter.of(context).push(AppRouter.verifyCodeView);
           }
           if (state is AuthFail) {
             showDialog(
@@ -44,7 +45,19 @@ class LoginForm extends StatelessWidget {
           final cubit = AuthCubit.get(context);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
+              CustomTextField(
+                baseText: "الاسم الكامل:",
+                isPassword: false,
+                hint: "ادخل اسمك الكامل",
+                icon: Icons.person,
+                controller: cubit.fullname,
+                keyboardType: TextInputType.text,
+                validator: (val) {
+                  return validInput(val!, 8, 8, "password");
+                },
+              ),
               CustomTextField(
                 baseText: " البريد الالكتروني:",
                 isPassword: false,
@@ -59,7 +72,6 @@ class LoginForm extends StatelessWidget {
               CustomTextField(
                 baseText: "كلمة المرور:",
                 isPassword: true,
-                // passToggle: true,
                 hint: "ادخل كلمة المرور",
                 controller: cubit.password,
                 keyboardType: TextInputType.text,
@@ -68,24 +80,41 @@ class LoginForm extends StatelessWidget {
                   return validInput(val!, 8, 100, "password");
                 },
               ),
+              CustomTextField(
+                baseText: "تأكيد كلمة المرور:",
+                isPassword: true,
+                // passToggle: true,
+                hint: "أكد كلمة المرور",
+                controller: cubit.rePassword,
+                keyboardType: TextInputType.text,
+                icon: Icons.lock_outline,
+                validator: (val) {
+                  return validInput(val!, 8, 100, "password");
+                },
+              ),
               SizedBox(height: 15),
               state is AuthLoading
-                  ? Center(
-                    child: CircularProgressIndicator(
-                      color: AppColor.primaryColor,
-                    ),
-                  )
+                  ? Center(child: CircularProgressIndicator())
                   : CustomButton(
-                    text: "تسجيل الدخول",
+                    text: "إنشاء حساب",
                     onTap: () {
-                      cubit.signIn();
+                      cubit.signUp();
+                      // print(cubit.email.text);
+                      // email = cubit.email.text;
+                      // print(email);
+                      CacheHelper.setSecureData(
+                        key: "email",
+                        value: cubit.email.text,
+                      );
+
+                      ///  GoRouter.of(context).push(AppRouter.verifyCodeView);
                     },
                   ),
               CustomTextButtomAuth(
-                one: "ليس لديك حساب ؟",
-                tow: "  إنشاء حساب",
+                one: "هل لديك حساب ؟",
+                tow: " تسجيل الدخول",
                 onTap: () {
-                  GoRouter.of(context).pushReplacement(AppRouter.registerView);
+                  GoRouter.of(context).pushReplacement(AppRouter.loginView);
                 },
               ),
             ],

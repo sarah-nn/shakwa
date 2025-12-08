@@ -23,7 +23,9 @@ class ComplaintHeader extends StatelessWidget {
               Text(
                 complaint.complaintType.name,
                 style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 16),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
               const SizedBox(height: 6),
               Text(complaint.description, style: const TextStyle(fontSize: 14)),

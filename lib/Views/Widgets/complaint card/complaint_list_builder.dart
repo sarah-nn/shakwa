@@ -5,27 +5,16 @@ import 'package:shakwa/Controllers/compainte/complaint_cubit.dart';
 import 'package:shakwa/Controllers/complaint_details/complaint_details_cubit.dart';
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Repos/show_complain_repo.dart';
-import 'package:shakwa/Views/Widgets/complaints_card.dart';
+import 'package:shakwa/Views/Widgets/complaint%20card/complaints_card.dart';
 
-class ComplaintsList extends StatefulWidget {
-  const ComplaintsList({super.key});
-
-  @override
-  State<ComplaintsList> createState() => _ComplaintsListState();
-}
-
-class _ComplaintsListState extends State<ComplaintsList> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<ComplaintCubit>().getComplaint();
-  }
+class ComplaintListBuilder extends StatelessWidget {
+  const ComplaintListBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ComplaintCubit, ComplaintState>(
       builder: (context, state) {
-         if (state is ComplaintSuccess) {
+        if (state is ComplaintSuccess) {
           final complaints = state.complaintModel;
           return ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),

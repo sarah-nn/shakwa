@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakwa/Controllers/complaint_details/complaint_details_cubit.dart';
+import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Data/Models/complaint_model.dart';
 import 'complaint_header.dart';
 import 'complaint_bottom_row.dart';
-import 'complaint_details_section.dart';
+import 'complaint details section/complaint_details_section.dart';
 
 class ComplaintCard extends StatefulWidget {
   final ComplaintModel complaint;
-  final VoidCallback? onUpdated;
-
-  const ComplaintCard({super.key, required this.complaint, this.onUpdated});
+  const ComplaintCard({super.key, required this.complaint});
 
   @override
   State<ComplaintCard> createState() => _ComplaintCardState();
@@ -41,6 +40,8 @@ class _ComplaintCardState extends State<ComplaintCard> {
                     detailsCubit.getComplaintDetails(
                       complaint: widget.complaint.id,
                     );
+                  } else {
+                    detailsCubit.disconnectSocket();
                   }
                 },
                 child: ComplaintHeader(
@@ -49,15 +50,11 @@ class _ComplaintCardState extends State<ComplaintCard> {
                 ),
               ),
 
-              /// DETAILS
               if (expanded)
                 BlocBuilder<ComplaintDetailsCubit, ComplaintDetailsState>(
                   builder: (context, state) {
-                    if (state is ComplaintDetailsLoading) {
-                      return const Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
+                    if (state is ComplaintDetailsFailure) {
+                      return Center(child: Text(state.errMsg));
                     }
 
                     if (state is ComplaintDetailsSuccess) {
@@ -66,7 +63,12 @@ class _ComplaintCardState extends State<ComplaintCard> {
                       );
                     }
 
-                    return const SizedBox();
+                    return const Padding(
+                      padding: EdgeInsets.all(12),
+                      child: CircularProgressIndicator(
+                        color: AppColor.primaryColor,
+                      ),
+                    );
                   },
                 ),
 
@@ -74,7 +76,6 @@ class _ComplaintCardState extends State<ComplaintCard> {
               const Divider(height: 0.8),
               const SizedBox(height: 8),
 
-              /// BOTTOM ROW
               ComplaintBottomRow(complaint: widget.complaint),
             ],
           ),

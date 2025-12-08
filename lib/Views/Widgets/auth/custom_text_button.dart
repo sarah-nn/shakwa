@@ -8,9 +8,9 @@ class CustomTextButtomAuth extends StatelessWidget {
     required this.onTap,
     super.key,
   });
- final String one;
- final String tow;
- final void Function()? onTap;
+  final String one;
+  final String tow;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Column(
