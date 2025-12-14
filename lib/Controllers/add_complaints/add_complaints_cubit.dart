@@ -78,6 +78,27 @@ class AddComplaintsCubit extends Cubit<AddComplaintsState> {
         'complaintTypeId': id,
         'files': multipartFiles,
       });
+      // اطباع الحقول
+      print('--- FormData Fields ---');
+      formData.fields.forEach((field) {
+        print('${field.key}: ${field.value}');
+      });
+
+      // اطباع الملفات
+      print('--- FormData Files ---');
+      formData.files.forEach((file) {
+        print('file field: ${file.key}');
+        print('filename: ${file.value.filename}');
+        print('contentType: ${file.value.contentType}');
+        print('length: ${file.value.length}');
+      });
+
+      print('---  Files ---');
+      print('*** قائمة الملفات ومساراتها: ***');
+      for (var file in files) {
+        // نطبع مسار الملف (path) لأنه هو المعرّف الرئيسي له
+        print('اسم الملف/المسار: ${file.path}');
+      }
 
       final result = await repo.sendComplaint(formData);
 

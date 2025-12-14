@@ -1225,7 +1225,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
               BlocConsumer<AddComplaintsCubit, AddComplaintsState>(
                 listener: (context, state) {
                   if (state is AddComplaintsSuccess) {
-                    GoRouter.of(context).pop(true);
+                    context.pop(true);
                   } else if (state is AddComplaintsFailed) {
                     ScaffoldMessenger.of(
                       context,
@@ -1242,7 +1242,13 @@ class _AddComplaintViewState extends State<AddComplaintView> {
                         state is AddComplaintsLoading
                             ? null
                             : () {
-                              if (_formKey.currentState!.validate()) {
+                              if (typeId == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('اختر النوع !!!'),
+                                  ),
+                                );
+                              } else if (_formKey.currentState!.validate()) {
                                 context
                                     .read<AddComplaintsCubit>()
                                     .sendComplaint(
@@ -1345,7 +1351,23 @@ class _AddComplaintViewState extends State<AddComplaintView> {
     return InputDecoration(
       hintText: hint,
       contentPadding: const EdgeInsets.all(12),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      // Border when not focused
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(
+          color: AppColor.primaryColor.withOpacity(0.4), // 🔹 change this
+          width: 1,
+        ),
+      ),
+
+      // Border when focused
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(
+          color: Colors.blue, // 🔹 change this
+          width: 2,
+        ),
+      ),
     );
   }
 

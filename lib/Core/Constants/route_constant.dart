@@ -6,4 +6,5 @@ class AppRouter {
   static const homePage = '/homePage';
   static const notiPage = '/notiPage';
   static const addComplaintView = '/AddComplaintView';
+  static const updateComplaints = '/updateComplaints';
 }

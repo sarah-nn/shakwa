@@ -220,8 +220,11 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Data/Models/complaint_details_model.dart';
 import 'package:shakwa/Views/Widgets/complaint%20card/complaint%20details%20section/complaint_image_attachments.dart';
+import 'package:shakwa/Views/Widgets/complaint%20card/complaint%20details%20section/update_button.dart';
 import 'employee_notes_button.dart';
 import 'extra_request_button.dart';
 
@@ -264,6 +267,8 @@ class ComplaintDetailsSection extends StatelessWidget {
         // ====================== المرفقات (الصور) =======================
         ComplaintImageAttachments(imageUrls: imageUrls),
 
+        // ====================== تعديل الشكوى ======================
+        UpdateButton(details: details),
         // ====================== ملاحظات الجهة ======================
         EmployeeNotesButton(employeeNotes: details.employeeNotes),
 

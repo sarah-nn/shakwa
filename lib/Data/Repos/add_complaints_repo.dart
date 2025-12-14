@@ -30,7 +30,7 @@ class AddComplaintsRepo {
     String id,
   ) async {
     try {
-      final response = await api.get(EndPoints.Ctype + id);
+      final response = await api.get(EndPoints.cType + id);
       final types = ComplaintTypeResponse.fromJson(response);
       return Right(types);
     } on Exception catch (e) {
