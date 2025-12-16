@@ -5,10 +5,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 class PdfViewerPage extends StatelessWidget {
   final File file;
 
-  const PdfViewerPage({
-    super.key,
-    required this.file,
-  });
+  const PdfViewerPage({super.key, required this.file});
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +18,16 @@ class PdfViewerPage extends StatelessWidget {
         enableSwipe: true,
         swipeHorizontal: false,
         autoSpacing: true,
-    pageSnap: true,
+        pageSnap: true,
         onError: (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('خطأ في عرض ملف PDF')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('خطأ في عرض ملف PDF')));
         },
         onPageError: (page, error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('خطأ في صفحة من الملف')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('خطأ في صفحة من الملف')));
         },
       ),
     );
