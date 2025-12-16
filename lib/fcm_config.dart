@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shakwa/Core/cache_helper.dart';
 
 // دالة لمعالجة الرسائل في الخلفية (يجب أن تكون خارج الكلاس وخارج Main)
 @pragma('vm:entry-point')
@@ -30,6 +31,7 @@ class FirebaseApi {
 
     // 2. الحصول على التوكن (لإرسال إشعارات لهذا الجهاز تحديداً)
     final fCMToken = await _firebaseMessaging.getToken();
+    CacheHelper().saveData(key: 'fcm', value: fCMToken);
     print('FCM Token: $fCMToken');
 
     // 3. تهيئة الإشعارات المحلية

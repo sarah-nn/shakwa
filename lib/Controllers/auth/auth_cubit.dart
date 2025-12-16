@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakwa/fcm_config.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -22,6 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
       'full_name': fullname.text,
       'email': email.text,
       'password': password.text,
+      'fcm': CacheHelper().getData(key: 'fcm'),
     });
     result.fold(
       (failure) {

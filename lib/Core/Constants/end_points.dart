@@ -13,4 +13,6 @@ class EndPoints {
       '$baseUrl/complaints/user/my-complaints-sent-details/';
   static const String sendReply = '$baseUrl/complaint-comments/citizen-reply';
   static const String updateComplaint = '$baseUrl/complaints/update-complaint/';
+  static const String allNotification =
+      '$baseUrl/notification/get-all-notifications';
 }
