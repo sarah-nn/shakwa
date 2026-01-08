@@ -21,7 +21,7 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
       return;
     }
     socket = io.io(
-      EndPoints.baseUrl, // ضع را2  1ص2بط السيرفر
+      EndPoints.baseUrl, 
       io.OptionBuilder()
           .setTransports(['websocket'])
           .disableAutoConnect()
