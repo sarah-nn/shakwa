@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shakwa/Data/Models/complaint_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ComplaintBottomRow extends StatelessWidget {
   final ComplaintModel complaint;
@@ -21,11 +22,12 @@ class ComplaintBottomRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: Text(
-            "الرقم المرجعي: ${complaint.referenceNumber}",
+            "${t.refNumber} : ${complaint.referenceNumber}",
             style: TextStyle(color: Colors.grey.shade700),
           ),
         ),

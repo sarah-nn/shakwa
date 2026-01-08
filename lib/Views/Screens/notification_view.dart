@@ -3,14 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shakwa/Controllers/notification/notification_cubit.dart';
 import 'package:shakwa/Data/Models/noti_model.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationView extends StatelessWidget {
   const NotificationView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('الإشعارات')),
+      appBar: customAppBar(t.noti),
       body: BlocBuilder<NotificationCubit, NotificationState>(
         builder: (context, state) {
           if (state is NotificationsLoading) {
@@ -23,7 +27,7 @@ class NotificationView extends StatelessWidget {
 
           if (state is NotificationsLoaded) {
             if (state.notifications.isEmpty) {
-              return const Center(child: Text('لا يوجد إشعارات'));
+              return Center(child: Text(t.noNoti));
             }
 
             return ListView.separated(

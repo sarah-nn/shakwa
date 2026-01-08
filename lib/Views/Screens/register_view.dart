@@ -6,15 +6,17 @@ import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
 import 'package:shakwa/Views/Widgets/auth/register_form.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-     // appBar: customAppBar("إنشاء حساب"),
+      // appBar: customAppBar("إنشاء حساب"),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -22,7 +24,7 @@ class RegisterView extends StatelessWidget {
           children: [
             SizedBox(height: 50),
             Text(
-              "أنشئ حساباً جديداً لتقديم شكواك و متابعة تقدمها",
+              t.registerTilte,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,

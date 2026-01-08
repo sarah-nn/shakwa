@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shakwa/Core/cache_helper.dart';
+import 'package:shakwa/Core/service_locator.dart';
 
-// دالة لمعالجة الرسائل في الخلفية (يجب أن تكون خارج الكلاس وخارج Main)
 @pragma('vm:entry-point')
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('Title: ${message.notification?.title}');
@@ -24,23 +24,19 @@ class FirebaseApi {
 
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
-  // الوظيفة الرئيسية لتهيئة الإشعارات
   Future<void> initNotifications() async {
-    // 1. طلب الإذن (مهم جداً لـ iOS و Android 13+)
     await _firebaseMessaging.requestPermission();
 
-    // 2. الحصول على التوكن (لإرسال إشعارات لهذا الجهاز تحديداً)
     final fCMToken = await _firebaseMessaging.getToken();
-    CacheHelper().saveData(key: 'fcm', value: fCMToken);
+    final cache = getit<CacheHelper>();
+
+    await cache.saveData(key: 'fcm', value: fCMToken);
     print('FCM Token: $fCMToken');
 
-    // 3. تهيئة الإشعارات المحلية
     initLocalNotifications();
 
-    // 4. إعداد معالج الخلفية
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
 
-    // 5. الاستماع للرسائل والتطبيق مفتوح (Foreground)
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
       if (notification == null) return;
@@ -61,7 +57,6 @@ class FirebaseApi {
       );
     });
 
-    // 6. التعامل مع فتح التطبيق من الإشعار
     initPushNotifications();
   }
 
@@ -73,7 +68,6 @@ class FirebaseApi {
     await _localNotifications.initialize(
       settings,
       onDidReceiveNotificationResponse: (payload) {
-        // هنا يمكنك التوجيه لصفحة معينة عند الضغط على الإشعار المحلي
         final message = RemoteMessage.fromMap(jsonDecode(payload.payload!));
         handleMessage(message);
       },
@@ -88,18 +82,12 @@ class FirebaseApi {
   }
 
   Future<void> initPushNotifications() async {
-    // التعامل مع فتح التطبيق من حالة Terminated
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
-
-    // التعامل مع فتح التطبيق من حالة Background
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
   }
 
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
-
-    // هنا تضع كود التوجيه (Navigation)
-    // مثال: navigatorKey.currentState?.pushNamed('/notification_screen', arguments: message);
     print('تم فتح الإشعار: ${message.notification?.title}');
   }
 }

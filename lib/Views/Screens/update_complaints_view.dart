@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/update_complaint/update_complaints_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Data/Models/complaint_details_model.dart';
+import 'package:shakwa/Views/Widgets/language_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateComplaintsView extends StatefulWidget {
   final ComplaintDetailsModel complaint;
@@ -33,6 +35,26 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
     );
 
     localAttachments = List.from(widget.complaint.attachments);
+    // localAttachments = [
+    //   Attachment(
+    //     id: 991,
+    //     filePath: "https://picsum.photos/200",
+    //     fileType: "image",
+    //     createdAt: "",
+    //   ),
+    //   Attachment(
+    //     id: 991,
+    //     filePath: "https://picsum.photos/200",
+    //     fileType: "image",
+    //     createdAt: "",
+    //   ),
+    //   Attachment(
+    //     id: 992,
+    //     filePath: "https://www.africau.edu/images/default/sample.pdf",
+    //     fileType: "pdf",
+    //     createdAt: "",
+    //   ),
+    // ];
     oldImageIds = widget.complaint.attachments.map((e) => e.id).toList();
   }
 
@@ -40,7 +62,7 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
   Future<void> pickNewImage() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
       allowMultiple: false,
     );
 
@@ -53,23 +75,25 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(" تعديل شكوى", style: TextStyle(color: Colors.white)),
+        title: Text(t.complaintEdit, style: TextStyle(color: Colors.white)),
         automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: AppColor.primaryColor,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(19),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ===================== العنوان =====================
+            SizedBox(height: 20),
             TextField(
               controller: locationController,
               decoration: InputDecoration(
-                labelText: "عنوان الشكوى",
+                labelText: t.complaintTitleEdit,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -80,7 +104,7 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
               controller: descriptionController,
               maxLines: 4,
               decoration: InputDecoration(
-                labelText: "تفاصيل الشكوى",
+                labelText: t.complaintDetails,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -88,12 +112,13 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
             SizedBox(height: 20),
 
             // ===================== الصور القديمة =====================
-            Text(
-              "الصور السابقة",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+            localAttachments.isEmpty
+                ? SizedBox()
+                : Text(
+                  t.beforeImg,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
             SizedBox(height: 8),
-
             Wrap(
               spacing: 10,
               runSpacing: 10,
@@ -103,18 +128,52 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            att.filePath,
+                          child: Container(
                             width: 90,
                             height: 90,
-                            fit: BoxFit.cover,
+                            color: Colors.grey.shade200, // لون خلفية احتياطي
+                            // --- التحقق من نوع الملف هنا ---
+                            child:
+                                att.fileType == 'image'
+                                    ? Image.network(
+                                      att.filePath,
+                                      width: 90,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                                Icons.broken_image,
+                                                size: 40,
+                                              ),
+                                    )
+                                    : Column(
+                                      // شكل افتراضي لملف PDF
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.picture_as_pdf,
+                                          color: Colors.red,
+                                          size: 40,
+                                        ),
+                                        const Text(
+                                          "PDF",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                           ),
                         ),
+                        // زر الحذف (Close)
                         Positioned(
                           top: -5,
                           right: -5,
                           child: IconButton(
-                            icon: Icon(Icons.close, color: Colors.red),
+                            icon: const Icon(Icons.close, color: Colors.red),
                             onPressed: () {
                               setState(() {
                                 oldImageIds.remove(att.id);
@@ -130,20 +189,55 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                   }).toList(),
             ),
 
+            // Wrap(
+            //   spacing: 10,
+            //   runSpacing: 10,
+            //   children:
+            //       localAttachments.map((att) {
+            //         return Stack(
+            //           children: [
+            //             ClipRRect(
+            //               borderRadius: BorderRadius.circular(12),
+            //               child: Image.network(
+            //                 att.filePath,
+            //                 width: 90,
+            //                 height: 90,
+            //                 fit: BoxFit.cover,
+            //               ),
+            //             ),
+            //             Positioned(
+            //               top: -5,
+            //               right: -5,
+            //               child: IconButton(
+            //                 icon: Icon(Icons.close, color: Colors.red),
+            //                 onPressed: () {
+            //                   setState(() {
+            //                     oldImageIds.remove(att.id);
+            //                     localAttachments.removeWhere(
+            //                       (e) => e.id == att.id,
+            //                     );
+            //                   });
+            //                 },
+            //               ),
+            //             ),
+            //           ],
+            //         );
+            //       }).toList(),
+            // ),
             SizedBox(height: 20),
 
             // ===================== الصور الجديدة =====================
             Text(
-              "الصور الجديدة",
+              t.afterImg,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
-
+            // ===================== الصور والملفات الجديدة =====================
             Wrap(
               spacing: 10,
               runSpacing: 10,
               children: [
-                // زر إضافة صورة جديدة
+                // زر إضافة جديد
                 InkWell(
                   onTap: pickNewImage,
                   child: Container(
@@ -153,28 +247,55 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                       color: Colors.grey.shade300,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                   ),
                 ),
 
-                // عرض الصور الجديدة
+                // عرض القائمة المختارة
                 ...newImages.map((file) {
+                  // التحقق هل الملف هو PDF بناءً على الامتداد
+                  final isPdf = file.path.toLowerCase().endsWith('.pdf');
+
                   return Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.file(
-                          file,
+                        child: Container(
                           width: 90,
                           height: 90,
-                          fit: BoxFit.cover,
+                          color: Colors.grey.shade200,
+                          child:
+                              isPdf
+                                  ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.picture_as_pdf,
+                                        color: Colors.red,
+                                        size: 40,
+                                      ),
+                                      Text(
+                                        "PDF",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                  : Image.file(
+                                    file,
+                                    width: 90,
+                                    height: 90,
+                                    fit: BoxFit.cover,
+                                  ),
                         ),
                       ),
                       Positioned(
                         top: -5,
                         right: -5,
                         child: IconButton(
-                          icon: Icon(Icons.close, color: Colors.red),
+                          icon: const Icon(Icons.close, color: Colors.red),
                           onPressed: () {
                             setState(() {
                               newImages.remove(file);
@@ -188,6 +309,54 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
               ],
             ),
 
+            // Wrap(
+            //   spacing: 10,
+            //   runSpacing: 10,
+            //   children: [
+            //     // زر إضافة صورة جديدة
+            //     InkWell(
+            //       onTap: pickNewImage,
+            //       child: Container(
+            //         width: 90,
+            //         height: 90,
+            //         decoration: BoxDecoration(
+            //           color: Colors.grey.shade300,
+            //           borderRadius: BorderRadius.circular(12),
+            //         ),
+            //         child: Icon(Icons.add),
+            //       ),
+            //     ),
+
+            //     // عرض الصور الجديدة
+            //     ...newImages.map((file) {
+            //       return Stack(
+            //         children: [
+            //           ClipRRect(
+            //             borderRadius: BorderRadius.circular(12),
+            //             child: Image.file(
+            //               file,
+            //               width: 90,
+            //               height: 90,
+            //               fit: BoxFit.cover,
+            //             ),
+            //           ),
+            //           Positioned(
+            //             top: -5,
+            //             right: -5,
+            //             child: IconButton(
+            //               icon: Icon(Icons.close, color: Colors.red),
+            //               onPressed: () {
+            //                 setState(() {
+            //                   newImages.remove(file);
+            //                 });
+            //               },
+            //             ),
+            //           ),
+            //         ],
+            //       );
+            //     }).toList(),
+            //   ],
+            // ),
             SizedBox(height: 30),
 
             // ===================== زر حفظ التعديلات =====================
@@ -239,7 +408,7 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                       },
 
                       child: Text(
-                        "حفظ التعديلات",
+                        t.saveEdit,
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ),
@@ -247,6 +416,7 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                 }
               },
             ),
+            LanguageToggleButton(),
           ],
         ),
       ),

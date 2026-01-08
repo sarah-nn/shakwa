@@ -5,6 +5,7 @@ import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Core/service_locator.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
@@ -12,6 +13,7 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = getit<CacheHelper>().getData(key: "LoggedIn") ?? false;
+    final t = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -37,7 +39,8 @@ class SplashView extends StatelessWidget {
               ),
               const SizedBox(height: 25),
               Text(
-                "بوابة موحدة لتقديم الشكاوي الحكومية وتتبعها",
+                t.hello,
+                //  "بوابة موحدة لتقديم الشكاوي الحكومية وتتبعها",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -49,8 +52,9 @@ class SplashView extends StatelessWidget {
 
               const SizedBox(height: 40),
               CustomButton(
-                text: "ابدأ الآن",
+                text: t.startNow,
 
+                //     "ابدأ الآن",
                 onTap: () {
                   isLoggedIn
                       ? GoRouter.of(context).pushReplacement(AppRouter.homePage)
@@ -62,7 +66,8 @@ class SplashView extends StatelessWidget {
               const SizedBox(height: 15),
 
               Text(
-                "نحن هنا لخدمتك",
+                t.weAreHere,
+                // "نحن هنا لخدمتك",
                 style: TextStyle(
                   color: AppColor.primaryColor.withOpacity(0.7),
                   fontSize: 14,

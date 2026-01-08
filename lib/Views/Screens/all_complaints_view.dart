@@ -5,7 +5,9 @@ import 'package:shakwa/Controllers/compainte/complaint_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Views/Widgets/complaint%20card/complaint_list_builder.dart';
+import 'package:shakwa/Views/Widgets/custom_drawer.dart';
 import 'package:shakwa/Views/Widgets/floating_action_button_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AllComplaintsView extends StatefulWidget {
   const AllComplaintsView({super.key});
@@ -23,9 +25,11 @@ class _AllComplaintsViewState extends State<AllComplaintsView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Scaffold(
+      drawer: const CustomDrawer(),
       appBar: AppBar(
-        title: const Text("الشكاوي المقدمة"),
+        title: Text(t.complaintTitle),
         centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.white,
@@ -34,15 +38,26 @@ class _AllComplaintsViewState extends State<AllComplaintsView> {
           fontFamily: "Cairo",
         ),
         backgroundColor: AppColor.primaryColor,
-        leading: GestureDetector(
-          onTap: () {
-            GoRouter.of(context).push(AppRouter.notiPage);
-          },
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: Icon(Icons.notifications, color: Colors.white, size: 28),
+        actions: [
+          IconButton(
+            onPressed: () => GoRouter.of(context).push(AppRouter.notiPage),
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+              size: 28,
+            ),
           ),
-        ),
+        ],
+        iconTheme: const IconThemeData(color: Colors.white),
+        // leading: GestureDetector(
+        //   onTap: () {
+        //     GoRouter.of(context).push(AppRouter.notiPage);
+        //   },
+        //   child: const Padding(
+        //     padding: EdgeInsets.symmetric(horizontal: 10.0),
+        //     child: Icon(Icons.notifications, color: Colors.white, size: 28),
+        //   ),
+        // ),
       ),
       body: const ComplaintListBuilder(),
       floatingActionButton: const FloatingActionButtonWidget(),

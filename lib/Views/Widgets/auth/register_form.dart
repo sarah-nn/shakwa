@@ -8,12 +8,15 @@ import 'package:shakwa/Core/function.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
 import 'package:shakwa/Views/Widgets/auth/custom_text_button.dart';
 import 'package:shakwa/Views/Widgets/custom_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     String email = '';
     return Form(
       child: BlocConsumer<AuthCubit, AuthState>(
@@ -33,7 +36,7 @@ class RegisterForm extends StatelessWidget {
                         print('العملية مؤكدة!');
                         Navigator.of(context).pop();
                       },
-                      child: const Text('تأكيد'),
+                      child: const Text('ok'),
                     ),
                   ],
                 );
@@ -48,9 +51,9 @@ class RegisterForm extends StatelessWidget {
 
             children: [
               CustomTextField(
-                baseText: "الاسم الكامل:",
+                baseText: "${t.fullName} :",
                 isPassword: false,
-                hint: "ادخل اسمك الكامل",
+                hint: t.enterName,
                 icon: Icons.person,
                 controller: cubit.fullname,
                 keyboardType: TextInputType.text,
@@ -59,9 +62,9 @@ class RegisterForm extends StatelessWidget {
                 },
               ),
               CustomTextField(
-                baseText: " البريد الالكتروني:",
+                baseText: "  ${t.email}:",
                 isPassword: false,
-                hint: "ادخل بريدك الالكتروني",
+                hint: t.enterEmail,
                 icon: Icons.email,
                 controller: cubit.email,
                 keyboardType: TextInputType.text,
@@ -70,9 +73,9 @@ class RegisterForm extends StatelessWidget {
                 },
               ),
               CustomTextField(
-                baseText: "كلمة المرور:",
+                baseText: " ${t.password}:",
                 isPassword: true,
-                hint: "ادخل كلمة المرور",
+                hint: t.enterPassword,
                 controller: cubit.password,
                 keyboardType: TextInputType.text,
                 icon: Icons.lock_outline,
@@ -81,10 +84,10 @@ class RegisterForm extends StatelessWidget {
                 },
               ),
               CustomTextField(
-                baseText: "تأكيد كلمة المرور:",
+                baseText: "  ${t.confirmPassword}:",
                 isPassword: true,
                 // passToggle: true,
-                hint: "أكد كلمة المرور",
+                hint: t.enterConfirmed,
                 controller: cubit.rePassword,
                 keyboardType: TextInputType.text,
                 icon: Icons.lock_outline,
@@ -96,7 +99,7 @@ class RegisterForm extends StatelessWidget {
               state is AuthLoading
                   ? Center(child: CircularProgressIndicator())
                   : CustomButton(
-                    text: "إنشاء حساب",
+                    text: t.register,
                     onTap: () {
                       cubit.signUp();
                       // print(cubit.email.text);
@@ -111,8 +114,8 @@ class RegisterForm extends StatelessWidget {
                     },
                   ),
               CustomTextButtomAuth(
-                one: "هل لديك حساب ؟",
-                tow: " تسجيل الدخول",
+                one: t.haveAccount,
+                tow: t.login,
                 onTap: () {
                   GoRouter.of(context).pushReplacement(AppRouter.loginView);
                 },

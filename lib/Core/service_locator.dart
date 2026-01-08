@@ -6,7 +6,7 @@ import 'package:shakwa/Core/cache_helper.dart';
 
 final getit = GetIt.instance;
 
-void setUpAppService() async {
+Future<void> setUpAppService() async {
   // Initialize shared preferences or cache if needed
 
   getit.registerLazySingleton<CacheHelper>(() => CacheHelper());

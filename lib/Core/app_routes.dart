@@ -7,12 +7,14 @@ import 'package:shakwa/Controllers/compainte/complaint_cubit.dart';
 import 'package:shakwa/Controllers/complaint_details/complaint_details_cubit.dart';
 import 'package:shakwa/Controllers/complaint_type/complaint_type_cubit.dart';
 import 'package:shakwa/Controllers/govenment/govenment_cubit.dart';
+import 'package:shakwa/Controllers/notification/notification_cubit.dart';
 import 'package:shakwa/Controllers/update_complaint/update_complaints_cubit.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Models/complaint_details_model.dart';
 import 'package:shakwa/Data/Repos/add_complaints_repo.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
+import 'package:shakwa/Data/Repos/noti_repo.dart';
 import 'package:shakwa/Data/Repos/send_complaint_repo.dart';
 import 'package:shakwa/Data/Repos/show_complain_repo.dart';
 import 'package:shakwa/Data/Repos/update_complaints_repo.dart';
@@ -41,7 +43,14 @@ abstract class Routing {
       ),
       GoRoute(
         path: AppRouter.notiPage,
-        builder: (context, state) => const NotificationView(),
+        builder:
+            (context, state) => BlocProvider(
+              create:
+                  (context) =>
+                      NotificationCubit(NotiRepo(DioConsumer(Dio())))
+                        ..fetchNotifications(),
+              child: NotificationView(),
+            ),
       ),
       GoRoute(
         path: AppRouter.addComplaintView,

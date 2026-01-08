@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/complaint_details/complaint_details_cubit.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Data/Models/complaint_details_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateButton extends StatelessWidget {
   const UpdateButton({super.key, required this.details});
@@ -12,6 +13,7 @@ class UpdateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.red.withOpacity(0.1), // خلفية حمراء خفيفة
@@ -31,7 +33,7 @@ class UpdateButton extends StatelessWidget {
         }
       },
       child: Text(
-        "تعديل الشكوى",
+        t.complaintEdit,
         style: TextStyle(
           color: Colors.red, // النص باللون الأحمر
           fontWeight: FontWeight.bold,

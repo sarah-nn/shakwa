@@ -10,12 +10,14 @@ import 'package:shakwa/Core/service_locator.dart';
 import 'package:shakwa/Views/Widgets/custom_button.dart';
 import 'package:shakwa/Views/Widgets/auth/custom_text_button.dart';
 import 'package:shakwa/Views/Widgets/custom_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Form(
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
@@ -35,7 +37,7 @@ class LoginForm extends StatelessWidget {
                         print('العملية مؤكدة!');
                         Navigator.of(context).pop();
                       },
-                      child: const Text('تأكيد'),
+                      child: const Text('ok'),
                     ),
                   ],
                 );
@@ -49,9 +51,9 @@ class LoginForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomTextField(
-                baseText: " البريد الالكتروني:",
+                baseText: " ${t.email}:",
                 isPassword: false,
-                hint: "ادخل بريدك الالكتروني",
+                hint: t.enterEmail,
                 icon: Icons.email,
                 controller: cubit.email,
                 keyboardType: TextInputType.text,
@@ -60,10 +62,10 @@ class LoginForm extends StatelessWidget {
                 },
               ),
               CustomTextField(
-                baseText: "كلمة المرور:",
+                baseText: " ${t.password}:",
                 isPassword: true,
                 // passToggle: true,
-                hint: "ادخل كلمة المرور",
+                hint: t.enterPassword,
                 controller: cubit.password,
                 keyboardType: TextInputType.text,
                 icon: Icons.lock_outline,
@@ -79,14 +81,14 @@ class LoginForm extends StatelessWidget {
                     ),
                   )
                   : CustomButton(
-                    text: "تسجيل الدخول",
+                    text: t.login,
                     onTap: () {
                       cubit.signIn();
                     },
                   ),
               CustomTextButtomAuth(
-                one: "ليس لديك حساب ؟",
-                tow: "  إنشاء حساب",
+                one: t.anotherAccount,
+                tow: t.createAccount,
                 onTap: () {
                   GoRouter.of(context).pushReplacement(AppRouter.registerView);
                 },

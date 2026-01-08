@@ -7,12 +7,15 @@ import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Views/Widgets/custom_appBar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VerifyCodeView extends StatelessWidget {
   VerifyCodeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     return FutureBuilder<String?>(
       future: CacheHelper.getSecureData(key: "email"),
       builder: (context, snapshot) {
@@ -27,7 +30,7 @@ class VerifyCodeView extends StatelessWidget {
         final email = snapshot.data!;
 
         return Scaffold(
-          appBar: customAppBar("تأكيد الحساب"),
+          appBar: customAppBar(t.verify),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -64,7 +67,7 @@ class VerifyCodeView extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              "الرمز غير صحيح ! حاول مجدداً",
+                              t.invalidCode,
 
                               style: const TextStyle(
                                 color: Colors.red,
@@ -85,8 +88,8 @@ class VerifyCodeView extends StatelessWidget {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.2,
                         ),
-                        const Text(
-                          "يرجى إدخال رمز التحقق الذي تم إرساله إلى بريدك الالكتروني",
+                        Text(
+                          t.enterCode,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
