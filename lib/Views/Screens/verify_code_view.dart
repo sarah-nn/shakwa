@@ -6,6 +6,7 @@ import 'package:shakwa/Controllers/auth/auth_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/cache_helper.dart';
+import 'package:shakwa/Core/service_locator.dart';
 import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,6 +42,7 @@ class VerifyCodeView extends StatelessWidget {
                   if (state is AuthSuccess) {
                     // الانتقال إلى الصفحة الرئيسية عند النجاح
                     GoRouter.of(context).pushReplacement(AppRouter.homePage);
+                    getit<CacheHelper>().saveData(key: "LoggedIn", value: true);
                   }
                   // يمكنك أيضاً التعامل مع AuthFail هنا لعرض SnackBar أو Dialog
                 },

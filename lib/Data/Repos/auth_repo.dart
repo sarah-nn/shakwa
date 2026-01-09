@@ -11,7 +11,15 @@ class AuthRepo {
 
   Future<Either<Failure, String>> signUp(Map body) async {
     try {
-      await api.post(EndPoints.signUp, body);
+      var data = await api.post(EndPoints.signUp, body);
+      await CacheHelper.setSecureData(
+        key: "accessToken",
+        value: data['data']['accessToken'],
+      );
+      await CacheHelper.setSecureData(
+        key: "refreshToken",
+        value: data['data']['refreshToken'],
+      );
       return const Right("singup done");
     } on Exception catch (e) {
       if (e is DioException) {

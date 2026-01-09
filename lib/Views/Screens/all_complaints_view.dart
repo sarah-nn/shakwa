@@ -49,15 +49,6 @@ class _AllComplaintsViewState extends State<AllComplaintsView> {
           ),
         ],
         iconTheme: const IconThemeData(color: Colors.white),
-        // leading: GestureDetector(
-        //   onTap: () {
-        //     GoRouter.of(context).push(AppRouter.notiPage);
-        //   },
-        //   child: const Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 10.0),
-        //     child: Icon(Icons.notifications, color: Colors.white, size: 28),
-        //   ),
-        // ),
       ),
       body: const ComplaintListBuilder(),
       floatingActionButton: const FloatingActionButtonWidget(),

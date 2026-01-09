@@ -19,8 +19,10 @@ class FloatingActionButtonWidget extends StatelessWidget {
             final result = await GoRouter.of(
               context,
             ).push(AppRouter.addComplaintView);
-            if (result == true) {
-              context.read<ComplaintCubit>().getComplaint();
+            // التأكد من أن السياق (context) ما زال متاحاً وأن النتيجة نجاح
+            if (result == true && context.mounted) {
+              // نمرر isRefresh لإعادة تحميل الصفحة الأولى ومسح القديم
+              context.read<ComplaintCubit>().getComplaint(isRefresh: true);
             }
           },
           backgroundColor: AppColor.primaryColor,

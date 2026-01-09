@@ -7,6 +7,8 @@ abstract class Failure {
 }
 
 class ServerFailure extends Failure {
+  //final t = AppLocalizations.of(context)!;
+
   ServerFailure(super.errorMessage);
 
   factory ServerFailure.fromDioError(DioException dioError) {

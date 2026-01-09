@@ -80,9 +80,9 @@ class CustomDrawer extends StatelessWidget {
               style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              getit<CacheHelper>().saveData(key: "LoggedIn", value: true);
+              getit<CacheHelper>().saveData(key: "LoggedIn", value: false);
               CacheHelper.deleteSecureData(key: "accessToken");
-              GoRouter.of(context).push(AppRouter.loginView);
+              GoRouter.of(context).pushReplacement(AppRouter.loginView);
             },
           ),
           const SizedBox(height: 20),
