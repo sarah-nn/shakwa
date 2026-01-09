@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shakwa/fcm_config.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -19,12 +18,13 @@ class AuthCubit extends Cubit<AuthState> {
   final TextEditingController fullname = TextEditingController();
 
   signUp() async {
+    final fcm = await CacheHelper.getSecureData(key: "fcm");
     emit(AuthLoading());
     final result = await authRepo.signUp({
       'full_name': fullname.text,
       'email': email.text,
       'password': password.text,
-      'fcm': CacheHelper().getData(key: 'fcm'),
+      'fcm_token': fcm,
     });
     result.fold(
       (failure) {
@@ -37,10 +37,13 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   signIn() async {
+    final fcm = await CacheHelper.getSecureData(key: "fcm");
+    print(fcm);
     emit(AuthLoading());
     final result = await authRepo.signIn({
       'email': email.text,
       'password': password.text,
+      'fcm_token': fcm,
     });
     result.fold(
       (failure) {

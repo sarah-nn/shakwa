@@ -7,6 +7,7 @@ import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Models/complaint_model.dart';
 import 'package:shakwa/Data/Repos/show_complain_repo.dart';
 import 'package:shakwa/Views/Widgets/complaint%20card/complaints_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ComplaintListBuilder extends StatefulWidget {
   const ComplaintListBuilder({super.key});
@@ -48,6 +49,7 @@ class _ComplaintListBuilderState extends State<ComplaintListBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return BlocBuilder<ComplaintCubit, ComplaintState>(
       builder: (context, state) {
         List<ComplaintModel> complaints = [];
@@ -69,32 +71,36 @@ class _ComplaintListBuilderState extends State<ComplaintListBuilder> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return ListView.builder(
-          controller: _scrollController,
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-          itemCount: complaints.length + (isLoadingPagination ? 1 : 0),
-          itemBuilder: (context, index) {
-            if (index == complaints.length) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Center(
-                  child:
-                      hasMore
-                          ? const CircularProgressIndicator()
-                          : const Text("لا يوجد شكاوى أخرى"),
-                ),
-              );
-            }
+        return complaints.isEmpty
+            ? Container(child: Center(child: Text(t.noComplaint)))
+            : ListView.builder(
+              controller: _scrollController,
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+              itemCount: complaints.length + (isLoadingPagination ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == complaints.length) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Center(
+                      child:
+                          hasMore
+                              ? const CircularProgressIndicator()
+                              : const Text("لا يوجد شكاوى أخرى"),
+                    ),
+                  );
+                }
 
-            return BlocProvider(
-              create:
-                  (context) => ComplaintDetailsCubit(
-                    showComplaintRepo: ShowComplaintRepo(DioConsumer(Dio())),
-                  ),
-              child: ComplaintCard(complaint: complaints[index]),
+                return BlocProvider(
+                  create:
+                      (context) => ComplaintDetailsCubit(
+                        showComplaintRepo: ShowComplaintRepo(
+                          DioConsumer(Dio()),
+                        ),
+                      ),
+                  child: ComplaintCard(complaint: complaints[index]),
+                );
+              },
             );
-          },
-        );
       },
     );
   }

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/language_cubit.dart';
+import 'package:shakwa/Controllers/user/user_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/cache_helper.dart';
 import 'package:shakwa/Core/service_locator.dart';
+import 'package:shakwa/Views/Widgets/auth/name_email.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -22,19 +24,8 @@ class CustomDrawer extends StatelessWidget {
       child: Column(
         children: [
           // رأس القائمة (Header)
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: AppColor.primaryColor),
-            accountName: const Text(
-              "مستخدم شكوى",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            accountEmail: const Text("user@example.com"),
-            currentAccountPicture: const CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.person, size: 40, color: AppColor.primaryColor),
-            ),
-          ),
-
+          // استهلاك بيانات المستخدم من الكيوبت
+          NameAndEmail(),
           // زر تغيير اللغة
           ListTile(
             leading: const Icon(Icons.language, color: AppColor.primaryColor),

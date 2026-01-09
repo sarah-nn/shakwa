@@ -41,8 +41,7 @@ class VerifyCodeView extends StatelessWidget {
                   // يتم تشغيل هذا الكود بعد اكتمال مرحلة الـ build
                   if (state is AuthSuccess) {
                     // الانتقال إلى الصفحة الرئيسية عند النجاح
-                    GoRouter.of(context).pushReplacement(AppRouter.homePage);
-                    getit<CacheHelper>().saveData(key: "LoggedIn", value: true);
+                    GoRouter.of(context).pushReplacement(AppRouter.loginView);
                   }
                   // يمكنك أيضاً التعامل مع AuthFail هنا لعرض SnackBar أو Dialog
                 },

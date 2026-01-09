@@ -9,6 +9,7 @@ import 'package:shakwa/Controllers/complaint_type/complaint_type_cubit.dart';
 import 'package:shakwa/Controllers/govenment/govenment_cubit.dart';
 import 'package:shakwa/Controllers/notification/notification_cubit.dart';
 import 'package:shakwa/Controllers/update_complaint/update_complaints_cubit.dart';
+import 'package:shakwa/Controllers/user/user_cubit.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Models/complaint_details_model.dart';
@@ -94,11 +95,20 @@ abstract class Routing {
       GoRoute(
         path: AppRouter.homePage,
         builder:
-            (context, state) => BlocProvider(
-              create:
-                  (context) => ComplaintCubit(
-                    showComplaintRepo: ShowComplaintRepo(DioConsumer(Dio())),
-                  ),
+            (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create:
+                      (context) => ComplaintCubit(
+                        showComplaintRepo: ShowComplaintRepo(
+                          DioConsumer(Dio()),
+                        ),
+                      ),
+                ),
+                BlocProvider(
+                  create: (context) => UserCubit(DioConsumer(Dio())),
+                ),
+              ],
               child: const AllComplaintsView(),
             ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/compainte/complaint_cubit.dart';
+import 'package:shakwa/Controllers/user/user_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 import 'package:shakwa/Views/Widgets/complaint%20card/complaint_list_builder.dart';
@@ -21,6 +22,7 @@ class _AllComplaintsViewState extends State<AllComplaintsView> {
   void initState() {
     super.initState();
     context.read<ComplaintCubit>().getComplaint();
+    context.read<UserCubit>().getUserProfile(); // جلب بيانات المستخدم هنا
   }
 
   @override

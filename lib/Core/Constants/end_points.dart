@@ -1,10 +1,12 @@
 class EndPoints {
-  static const String baseUrl = 'http://192.168.1.104:4000';
+  //static const String baseUrl = 'http://192.168.1.104:4000';
+  static const String baseUrl = 'https://b13aa3f89d87.ngrok-free.app';
 
   static const String signUp = '$baseUrl/authentication/user/sign-up';
   static const String signIn = '$baseUrl/authentication/sign-in';
   static const String verify = '$baseUrl/otps/verify-otp';
   static const String refreshToken = '$baseUrl/authentication/refresh-token';
+  static const String profile = '$baseUrl/authentication/profile';
   static const String allGovernment = '$baseUrl/government/all';
   static const String cType = '$baseUrl/complaint-types/government/';
   static const String sendComplaint = '$baseUrl/complaints/send-complaint';

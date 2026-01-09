@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shakwa/Core/cache_helper.dart';
-import 'package:shakwa/Core/service_locator.dart';
 
 @pragma('vm:entry-point')
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
@@ -28,9 +27,8 @@ class FirebaseApi {
     await _firebaseMessaging.requestPermission();
 
     final fCMToken = await _firebaseMessaging.getToken();
-    final cache = getit<CacheHelper>();
-
-    await cache.saveData(key: 'fcm', value: fCMToken);
+    //final cache = getit<CacheHelper>();
+    await CacheHelper.setSecureData(key: "fcm", value: fCMToken!);
     print('FCM Token: $fCMToken');
 
     initLocalNotifications();
