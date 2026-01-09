@@ -53,22 +53,22 @@ class _ComplaintCardState extends State<ComplaintCard> {
               if (expanded)
                 BlocBuilder<ComplaintDetailsCubit, ComplaintDetailsState>(
                   builder: (context, state) {
-                    if (state is ComplaintDetailsFailure) {
-                      return Center(child: Text(state.errMsg));
-                    }
+                   if (state is ComplaintDetailsSuccess) {
+  return ComplaintDetailsSection(
+    details: state.complaintDetailsModel,
+  );
+} else if (state is ComplaintDetailsFailure) {
+  return Center(child: Text(state.errMsg));
+} else if (state is ComplaintDetailsLoading) {
+  // يظهر التحميل فقط عند الطلب الأول للبيانات
+  return const Padding(
+    padding: EdgeInsets.all(12),
+    child: Center(child: CircularProgressIndicator(color: AppColor.primaryColor)),
+  );
+}
 
-                  else  if (state is ComplaintDetailsSuccess) {
-                      return ComplaintDetailsSection(
-                        details: state.complaintDetailsModel,
-                      );
-                    }
-
-                    return const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: CircularProgressIndicator(
-                        color: AppColor.primaryColor,
-                      ),
-                    );
+// في حال كانت الحالة Initial أو أي حالة أخرى غير Success/Loading/Failure
+return const SizedBox.shrink();
                   },
                 ),
 
