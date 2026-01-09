@@ -24,7 +24,6 @@ class AuthCubit extends Cubit<AuthState> {
       'full_name': fullname.text,
       'email': email.text,
       'password': password.text,
-      'fcm': CacheHelper().getData(key: 'fcm'),
     });
     result.fold(
       (failure) {
@@ -37,10 +36,13 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   signIn() async {
+    final fcm = await CacheHelper.getSecureData(key: "fcm");
+    print(fcm);
     emit(AuthLoading());
     final result = await authRepo.signIn({
       'email': email.text,
       'password': password.text,
+      'fcm_token': fcm,
     });
     result.fold(
       (failure) {

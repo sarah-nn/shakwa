@@ -57,7 +57,7 @@ class _ComplaintCardState extends State<ComplaintCard> {
                       return Center(child: Text(state.errMsg));
                     }
 
-                    if (state is ComplaintDetailsSuccess) {
+                  else  if (state is ComplaintDetailsSuccess) {
                       return ComplaintDetailsSection(
                         details: state.complaintDetailsModel,
                       );

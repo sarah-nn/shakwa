@@ -12,8 +12,8 @@ class ComplaintDetailsSection extends StatelessWidget {
 
   const ComplaintDetailsSection({super.key, required this.details});
 
-  bool _isImage(String type) {
-    return ['jpg', 'jpeg', 'png', 'webp'].contains(type.toLowerCase());
+ bool _isImage(String type) {
+    return ["image"].contains(type.toLowerCase());
   }
 
   @override
