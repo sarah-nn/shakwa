@@ -51,7 +51,14 @@ class _AllComplaintsViewState extends State<AllComplaintsView> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: const ComplaintListBuilder(),
-      floatingActionButton: const FloatingActionButtonWidget(),
+      floatingActionButton:  FloatingActionButtonWidget(onPressed: () async {
+            final result = await GoRouter.of(
+              context,
+            ).push(AppRouter.addComplaintView);
+            if (result == true) {
+              context.read<ComplaintCubit>().getComplaint(isInitial: true);
+            }
+          },),
     );
   }
 }

@@ -6,8 +6,8 @@ import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
 
 class FloatingActionButtonWidget extends StatelessWidget {
-  const FloatingActionButtonWidget({super.key});
-
+   FloatingActionButtonWidget({this.onPressed,super.key});
+ void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Align(

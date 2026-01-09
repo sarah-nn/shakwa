@@ -17,7 +17,6 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
 
   void connectSocket(int complaintId) {
     if (socket != null && socket!.connected) {
-      print("Socket already connected, skipping creation.");
       return;
     }
     socket = io.io(
@@ -36,15 +35,19 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
       socket!.emit("joinComplaint", complaintId);
     });
 
-    socket!.on("newComment", (data) {
-      print(data);
-      final updatedData = ComplaintDetailsModel.fromJson(data);
+    // socket!.on("newComment", (data) {
+    //   print(data);
+    //   final updatedData = ComplaintDetailsModel.fromJson(data);
 
-      emit(ComplaintDetailsSuccess(complaintDetailsModel: updatedData));
-      currentReplies = List.from(updatedData.requestsAndReplies);
-      emit(ComplaintRepliesUpdated(replies: currentReplies));
-    });
-
+    //   emit(ComplaintDetailsSuccess(complaintDetailsModel: updatedData));
+    //   currentReplies = List.from(updatedData.requestsAndReplies);
+    //   emit(ComplaintRepliesUpdated(replies: currentReplies));
+    // });
+socket!.on("newComment", (data) {
+  final updatedData = ComplaintDetailsModel.fromJson(data);
+    currentReplies = List.from(updatedData.requestsAndReplies);
+    emit(ComplaintDetailsSuccess(complaintDetailsModel: updatedData));
+});
     socket!.onDisconnect(
       (_) => print("Socket disconnected.......$complaintId"),
     );
