@@ -17,6 +17,7 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
 
   void connectSocket(int complaintId) {
     if (socket != null && socket!.connected) {
+      print("Socket already connected, skipping creation.");
       return;
     }
     socket = io.io(

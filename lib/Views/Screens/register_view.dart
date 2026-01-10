@@ -7,6 +7,7 @@ import 'package:shakwa/Core/Network/Api/dio_consumer.dart';
 import 'package:shakwa/Data/Repos/auth_repo.dart';
 import 'package:shakwa/Views/Widgets/auth/register_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shakwa/Views/Widgets/custom_appBar.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key});
@@ -16,7 +17,7 @@ class RegisterView extends StatelessWidget {
     final t = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      // appBar: customAppBar("إنشاء حساب"),
+       appBar: customAppBar("إنشاء حساب"),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(

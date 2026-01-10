@@ -1,6 +1,6 @@
 class EndPoints {
   //static const String baseUrl = 'http://192.168.1.104:4000';
-  static const String baseUrl = 'https://b13aa3f89d87.ngrok-free.app';
+  static const String baseUrl = 'https://eaa36598ecff.ngrok-free.app';
 
   static const String signUp = '$baseUrl/authentication/user/sign-up';
   static const String signIn = '$baseUrl/authentication/sign-in';

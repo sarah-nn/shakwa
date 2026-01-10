@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/language_cubit.dart';
-import 'package:shakwa/Controllers/user/user_cubit.dart';
+import 'package:shakwa/Controllers/theme/theme_cubit.dart';
+import 'package:shakwa/Controllers/theme/theme_state.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shakwa/Core/Constants/route_constant.dart';
@@ -49,16 +50,30 @@ class CustomDrawer extends StatelessWidget {
           ),
 
           // زر تغيير الثيم (شكلياً)
-          ListTile(
-            leading: const Icon(Icons.dark_mode, color: AppColor.primaryColor),
-            title: const Text("الوضع الليلي"),
-            // trailing: Switch(
-            //   value: false, // قيمة تجريبية
-            //   onChanged: (val) {
-            //     // منطق تغيير الثيم
-            //   },
-            // ),
-          ),
+         BlocBuilder<ThemeCubit, AppThemeMode>(
+  builder: (context, themeMode) {
+    final isDark = themeMode == AppThemeMode.dark;
+    final themeText = isDark
+        ? ( currentLang == 'ar' ? 'الوضع الليلي' : 'Dark Mode')
+        : ( currentLang == 'ar' ? 'الوضع النهاري' : 'Light Mode');
+    return ListTile(
+      leading: Icon(
+        isDark ? Icons.dark_mode : Icons.light_mode,
+        color: AppColor.primaryColor,
+      ),
+      title: Text(
+        themeText,
+      ),
+      trailing: Switch(
+        value: isDark,
+        onChanged: (value) {
+          context.read<ThemeCubit>().toggleTheme(value);
+        },
+      ),
+    );
+  },
+),
+
 
           const Spacer(),
           const Divider(),

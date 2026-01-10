@@ -34,18 +34,18 @@ class _AllComplaintsViewState extends State<AllComplaintsView> {
         title: Text(t.complaintTitle),
         centerTitle: true,
         titleTextStyle: const TextStyle(
-          color: Colors.white,
+          // color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 20,
           fontFamily: "Cairo",
         ),
-        backgroundColor: AppColor.primaryColor,
+        // backgroundColor: AppColor.primaryColor,
         actions: [
           IconButton(
             onPressed: () => GoRouter.of(context).push(AppRouter.notiPage),
             icon: const Icon(
               Icons.notifications,
-              color: Colors.white,
+              // color: Colors.white,
               size: 28,
             ),
           ),

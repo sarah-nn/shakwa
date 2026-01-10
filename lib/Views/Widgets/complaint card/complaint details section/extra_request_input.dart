@@ -18,7 +18,7 @@ class ExtraRequestInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 15),
       child: Row(
         children: [
           Expanded(
@@ -27,18 +27,18 @@ class ExtraRequestInput extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: "اكتب ردك...",
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
+                fillColor: Theme.of(context).colorScheme.surface,
+                // border: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(12),
+                //   borderSide: BorderSide.none,
+                // ),
               ),
             ),
           ),
           const SizedBox(width: 8),
           CircleAvatar(
-            radius: 22,
-            backgroundColor: AppColor.primaryColor,
+            radius: 25,
+            backgroundColor:Theme.of(context).colorScheme.primary,
             child: IconButton(
               icon: const Icon(Icons.send, color: Colors.white),
               onPressed: () {

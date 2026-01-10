@@ -206,8 +206,8 @@ void showExtraRequestDialog({
     context: context,
     builder: (context) {
       return Dialog(
-        backgroundColor: Colors.grey.shade100,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      //  backgroundColor: Colors.grey.shade100,
+       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: Column(

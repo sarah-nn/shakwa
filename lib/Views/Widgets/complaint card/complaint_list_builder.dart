@@ -72,7 +72,7 @@ class _ComplaintListBuilderState extends State<ComplaintListBuilder> {
         }
 
         return complaints.isEmpty
-            ? Container(child: Center(child: Text(t.noComplaint)))
+            ? Container(child: Center(child: Text("t.noComplaint")))
             : ListView.builder(
               controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
