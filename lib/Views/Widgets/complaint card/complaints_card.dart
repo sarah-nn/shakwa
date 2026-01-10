@@ -60,21 +60,19 @@ class _ComplaintCardState extends State<ComplaintCard> {
 } else if (state is ComplaintDetailsFailure) {
   return Center(child: Text(state.errMsg));
 } else if (state is ComplaintDetailsLoading) {
-  // يظهر التحميل فقط عند الطلب الأول للبيانات
   return const Padding(
     padding: EdgeInsets.all(12),
     child: Center(child: CircularProgressIndicator(color: AppColor.primaryColor)),
   );
 }
 
-// في حال كانت الحالة Initial أو أي حالة أخرى غير Success/Loading/Failure
 return const SizedBox.shrink();
                   },
                 ),
 
-              const SizedBox(height: 12),
-              const Divider(height: 0.8),
-              const SizedBox(height: 8),
+              const SizedBox(height: 14),
+              const Divider(height: 0.8,thickness: 0.23),
+              const SizedBox(height: 10),
 
               ComplaintBottomRow(complaint: widget.complaint),
             ],

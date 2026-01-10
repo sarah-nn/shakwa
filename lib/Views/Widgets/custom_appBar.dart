@@ -10,7 +10,7 @@ AppBar customAppBar(String title) {
       fontSize: 20,
       fontFamily: "cairo",
     ),
-    backgroundColor: AppColor.primaryColor,
-    foregroundColor: Colors.white,
+    // backgroundColor: AppColor.primaryColor,
+    // foregroundColor: Colors.white,
   );
 }

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shakwa/Controllers/update_complaint/update_complaints_cubit.dart';
 import 'package:shakwa/Core/Constants/app_color.dart';
 import 'package:shakwa/Data/Models/complaint_details_model.dart';
+import 'package:shakwa/Views/Widgets/custom_button.dart';
 import 'package:shakwa/Views/Widgets/language_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -78,10 +79,12 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
     final t = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.complaintEdit, style: TextStyle(color: Colors.white)),
+        title: Text(t.complaintEdit, 
+      //  style: TextStyle(color: Colors.white)
+        ),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        backgroundColor: AppColor.primaryColor,
+        // backgroundColor: AppColor.primaryColor,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(19),
@@ -240,14 +243,16 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                 // زر إضافة جديد
                 InkWell(
                   onTap: pickNewImage,
-                  child: Container(
-                    width: 90,
-                    height: 90,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(12),
+                  child: Card(
+                    child: Container(
+                      width: 90,
+                      height: 90,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.add),
                     ),
-                    child: const Icon(Icons.add),
                   ),
                 ),
 
@@ -374,12 +379,7 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                 } else {
                   return SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.primaryColor,
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      onPressed: () {
+                    child: CustomButton(text: t.saveEdit,onTap:() {
                         cubit.updateComplaint(
                           widget.complaint.id,
                           locationController.text,
@@ -405,13 +405,9 @@ class _UpdateComplaintsViewState extends State<UpdateComplaintsView> {
                           "Total Attachments: ${oldImageIds.length + newImages.length}",
                         );
                         print("====================================");
-                      },
-
-                      child: Text(
-                        t.saveEdit,
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
+                      },)
+                    
+            
                   );
                 }
               },

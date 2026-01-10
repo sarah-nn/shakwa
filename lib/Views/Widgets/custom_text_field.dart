@@ -39,7 +39,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Colors.black,
+             //  color: Colors.black,
             ),
           ),
           const SizedBox(height: 10),
@@ -52,21 +52,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
           controller: widget.controller,
 
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.primaryColor, width: 0.77),
-              borderRadius: BorderRadius.circular(7.69),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.primaryColor, width: 0.77),
+            // enabledBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: AppColor.primaryColor, width: 0.77),
+            //   borderRadius: BorderRadius.circular(7.69),
+            // ),
+            // focusedBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: AppColor.primaryColor, width: 0.77),
 
-              borderRadius: BorderRadius.circular(7.69),
-            ),
+            //   borderRadius: BorderRadius.circular(7.69),
+            // ),
 
             hintText: widget.hint,
-            hintStyle: const TextStyle(fontSize: 12, color: Colors.grey),
+            // hintStyle: const TextStyle(fontSize: 12, color: Colors.grey),
 
-            filled: true,
-            fillColor: AppColor.fillTextField,
+            // filled: true,
+            // fillColor: AppColor.fillTextField,
 
             prefixIcon:
                 widget.icon != null
@@ -88,9 +88,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     )
                     : null,
 
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(7.69),
-            ),
+            // border: OutlineInputBorder(
+            //   borderRadius: BorderRadius.circular(7.69),
+            // ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 15,

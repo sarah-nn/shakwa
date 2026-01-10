@@ -320,7 +320,7 @@ class _AddComplaintViewState extends State<AddComplaintView> {
           Text(
             text,
             style: TextStyle(
-              color: isPlaceholder ? Colors.grey[600] : Colors.black,
+              color: isPlaceholder ? Colors.grey[600] :Theme.of(context).colorScheme.onSurface,
               fontSize: 16,
             ),
           ),
@@ -383,22 +383,22 @@ class _AddComplaintViewState extends State<AddComplaintView> {
       hintText: hint,
       contentPadding: const EdgeInsets.all(12),
       // Border when not focused
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(
-          color: AppColor.primaryColor.withOpacity(0.4), // 🔹 change this
-          width: 1,
-        ),
-      ),
+      // enabledBorder: OutlineInputBorder(
+      //   borderRadius: BorderRadius.circular(8),
+      //   borderSide: BorderSide(
+      //     color: AppColor.primaryColor.withOpacity(0.4), // 🔹 change this
+      //     width: 1,
+      //   ),
+      // ),
 
-      // Border when focused
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(
-          color: Colors.blue, // 🔹 change this
-          width: 2,
-        ),
-      ),
+      // // Border when focused
+      // focusedBorder: OutlineInputBorder(
+      //   borderRadius: BorderRadius.circular(8),
+      //   borderSide: const BorderSide(
+      //     color: Colors.blue, // 🔹 change this
+      //     width: 2,
+      //   ),
+      // ),
     );
   }
 
